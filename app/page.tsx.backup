@@ -1,0 +1,1288 @@
+"use client";
+
+import React, { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+export default function SmartHospitalityLanding() {
+  const [navScrolled, setNavScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<"departments" | "performance" | "emotions">("departments");
+
+  // Floating cursor preview state for capabilities / service areas
+  const [cursorActive, setCursorActive] = useState(false);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [cursorImg, setCursorImg] = useState("");
+
+  const mainContainerRef = useRef<HTMLDivElement>(null);
+  const tabsContainerRef = useRef<HTMLDivElement>(null);
+
+  // GSAP Animations setup
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      // 1. Hero text reveal animation with polished easing
+      gsap.from("[data-hero-anim]", {
+        y: 40,
+        opacity: 0,
+        duration: 1.1,
+        ease: "power3.out",
+        stagger: 0.12,
+      });
+
+      // 2. Parallax on hero background elements
+      gsap.to(".hero-parallax-bg", {
+        scrollTrigger: {
+          trigger: "#home",
+          start: "top top",
+          end: "bottom top",
+          scrub: 1.2,
+        },
+        y: 140,
+        ease: "none",
+      });
+
+      // 3. Staggered reveal for About section mission/vision cards (FIXED TRIGGER: #about)
+      gsap.from(".problem-card", {
+        scrollTrigger: {
+          trigger: "#about",
+          start: "top 75%",
+          toggleActions: "play none none none",
+        },
+        y: 45,
+        opacity: 0,
+        duration: 0.9,
+        stagger: 0.18,
+        ease: "power3.out",
+      });
+
+      // 4. Staggered reveal for Services bento cards (TRIGGER: #services)
+      gsap.from(".bento-card", {
+        scrollTrigger: {
+          trigger: "#services",
+          start: "top 75%",
+          toggleActions: "play none none none",
+        },
+        y: 40,
+        opacity: 0,
+        duration: 0.85,
+        stagger: 0.12,
+        ease: "power3.out",
+      });
+
+      // 5. Staggered reveal for methodology steps
+      gsap.from(".methodology-step", {
+        scrollTrigger: {
+          trigger: ".methodology-grid",
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+        y: 30,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: "power2.out",
+      });
+
+      // 6. Parallax on the large bottom wordmark (-0.3 negative speed multiplier)
+      gsap.to(".parallax-wordmark", {
+        scrollTrigger: {
+          trigger: "#contact",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+        y: -90,
+        ease: "none",
+      });
+    }, mainContainerRef);
+
+    const handleScroll = () => {
+      setNavScrolled(window.scrollY > 40);
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    // Refresh ScrollTrigger once DOM layout finishes rendering
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 200);
+
+    return () => {
+      clearTimeout(timer);
+      ctx.revert();
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  // Smooth tab animation with GSAP on tab switch
+  const handleTabChange = (tab: "departments" | "performance" | "emotions") => {
+    if (tab === activeTab) return;
+    if (tabsContainerRef.current) {
+      gsap.to(tabsContainerRef.current, {
+        opacity: 0,
+        y: -10,
+        duration: 0.18,
+        ease: "power2.in",
+        onComplete: () => {
+          setActiveTab(tab);
+          gsap.fromTo(
+            tabsContainerRef.current,
+            { opacity: 0, y: 16 },
+            { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }
+          );
+        },
+      });
+    } else {
+      setActiveTab(tab);
+    }
+  };
+
+  // Floating cursor mouse movement
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (typeof window !== "undefined" && window.matchMedia("(pointer: fine)").matches) {
+      setCursorPos({ x: e.clientX, y: e.clientY });
+    }
+  };
+
+  return (
+    <div
+      ref={mainContainerRef}
+      onMouseMove={handleMouseMove}
+      className="relative min-h-screen bg-[#0C1208] text-[#F0F4EC] selection:bg-[#4A8C2A] selection:text-[#F0F4EC] overflow-x-hidden font-sans"
+    >
+      {/* Background grain texture overlay */}
+      <div className="pointer-events-none fixed inset-0 z-40 grain-overlay opacity-80" />
+
+      {/* Floating Cursor Preview (Substance Lab style with pointer: fine check) */}
+      {cursorActive && (
+        <div
+          className="fixed z-50 pointer-events-none -translate-x-1/2 -translate-y-1/2 w-64 h-44 rounded-2xl overflow-hidden border border-[#6DB33F]/30 shadow-2xl shadow-black/80 transition-transform duration-100 ease-out hidden md:block"
+          style={{
+            left: `${cursorPos.x}px`,
+            top: `${cursorPos.y}px`,
+          }}
+        >
+          <img
+            src={cursorImg}
+            alt="Preview"
+            className="w-full h-full object-cover scale-105"
+          />
+        </div>
+      )}
+
+      {/* 
+        ========================================================================
+        CAPSULE FLOATING NAVBAR
+        - Substance Lab capsule nav: Fixed, z-50, top-6, left-1/2 -translate-x-1/2, backdrop-blur-md
+        - Preserves source quirk: id="navbar" twice (primary nav and secondary wrapper)
+        ========================================================================
+      */}
+      <header
+        id="navbar"
+        className="fixed top-6 left-1/2 -translate-x-1/2 z-[80] w-[92%] max-w-5xl transition-all duration-300"
+      >
+        <div
+          id="navbar"
+          className={`flex items-center justify-between px-5 sm:px-7 py-3 rounded-full border transition-all duration-300 ${
+            navScrolled
+              ? "bg-[#0C1208]/90 border-white/20 shadow-[0_12px_40px_rgba(0,0,0,0.6)] backdrop-blur-xl"
+              : "bg-[#0C1208]/75 border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-md"
+          }`}
+        >
+          {/* Logo & 3x3 Dot Matrix */}
+          <a href="#home" className="flex items-center gap-3 group">
+            <div className="grid grid-cols-3 gap-1 p-1 rounded bg-white/5 border border-white/10 group-hover:border-[#6DB33F]/40 transition-colors">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#6DB33F]"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-white/90"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-white/90"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-white/90"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-white/90"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#6DB33F]"></span>
+            </div>
+            <div className="flex flex-col">
+              <span className="font-heading font-extrabold text-base tracking-widest text-[#F0F4EC] leading-tight">
+                SHM
+              </span>
+              <span className="text-[9px] uppercase tracking-wider text-[#6DB33F] font-bold">
+                Smart Hospitality
+              </span>
+            </div>
+          </a>
+
+          {/* Desktop Capsule Nav Links */}
+          <nav className="hidden md:flex items-center space-x-6 text-xs uppercase tracking-wider font-semibold text-[#F0F4EC]/80">
+            <a href="#about" className="hover:text-[#6DB33F] transition-colors py-1">
+              About SHM
+            </a>
+            <a href="#services" className="hover:text-[#6DB33F] transition-colors py-1">
+              Services
+            </a>
+            <a href="#clients" className="hover:text-[#6DB33F] transition-colors py-1">
+              Who We Serve
+            </a>
+            <a href="#standards" className="hover:text-[#6DB33F] transition-colors py-1">
+              Standards
+            </a>
+            <a href="#academy" className="hover:text-[#6DB33F] transition-colors py-1">
+              Academy
+            </a>
+          </nav>
+
+          {/* Right Action */}
+          <div className="hidden md:flex items-center space-x-3">
+            <a
+              href="#contact"
+              className="btn-primary px-5 py-2 rounded-full text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5 shadow-md"
+            >
+              <span>Assessment</span>
+              <iconify-icon icon="solar:arrow-right-linear" width="14" height="14"></iconify-icon>
+            </a>
+          </div>
+
+          {/* Mobile Hamburger */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden text-[#F0F4EC] p-1.5 rounded-lg focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            <iconify-icon icon="solar:hamburger-menu-linear" width="24" height="24"></iconify-icon>
+          </button>
+        </div>
+
+        {/* Mobile Dropdown */}
+        {mobileMenuOpen && (
+          <div className="md:hidden mt-2 p-5 rounded-3xl bg-[#0C1208]/95 border border-white/15 backdrop-blur-2xl space-y-3 text-sm">
+            <a
+              href="#about"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-[#F0F4EC] hover:text-[#6DB33F] py-1"
+            >
+              About SHM
+            </a>
+            <a
+              href="#services"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-[#F0F4EC] hover:text-[#6DB33F] py-1"
+            >
+              Our Services
+            </a>
+            <a
+              href="#clients"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-[#F0F4EC] hover:text-[#6DB33F] py-1"
+            >
+              Who We Serve
+            </a>
+            <a
+              href="#standards"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-[#F0F4EC] hover:text-[#6DB33F] py-1"
+            >
+              SHM Standards
+            </a>
+            <a
+              href="#academy"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-[#F0F4EC] hover:text-[#6DB33F] py-1"
+            >
+              SHM Academy
+            </a>
+            <a
+              href="#contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="btn-primary block text-center py-2.5 rounded-full text-xs font-bold uppercase tracking-wider mt-2"
+            >
+              Request Assessment
+            </a>
+          </div>
+        )}
+      </header>
+
+      {/* 
+        ========================================================================
+        SECTION 1 - HERO (Awwwards-quality refined design)
+        - Ambient green glowing depth spotlights
+        - Subtle floating badge & metrics glass cards
+        - High-contrast clamp headline with precise kerning
+        - Interactive dual action CTA buttons
+        ========================================================================
+      */}
+      <section
+        id="home"
+        className="relative pt-36 sm:pt-44 pb-28 lg:pb-40 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto z-10"
+      >
+        {/* Ambient Glowing Green Orbs */}
+        <div className="pointer-events-none absolute top-20 left-1/4 w-96 h-96 rounded-full bg-[#4A8C2A]/20 blur-[130px] animate-glow -z-10" />
+        <div className="pointer-events-none absolute bottom-10 right-10 w-[480px] h-[480px] rounded-full bg-[#6DB33F]/15 blur-[150px] -z-10" />
+
+        {/* Parallax Hero Background Imagery & Vignette */}
+        <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+          <img
+            src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/b5413203-6577-42c0-954e-3811b69415b0_3840w.png"
+            alt="Hospitality excellence backdrop"
+            className="hero-parallax-bg w-full h-[125%] object-cover object-center opacity-65"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(circle at 65% 30%, rgba(12,18,8,0.2) 0%, rgba(12,18,8,0.94) 75%, #0C1208 100%), linear-gradient(to bottom, rgba(12,18,8,0.3) 0%, #0C1208 100%)",
+            }}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+          {/* Main Hero Column (7 cols) */}
+          <div className="lg:col-span-7">
+            {/* HTML Tag: RESTAURANT • CAFÉ • BAR EXCELLENCE */}
+            <div data-hero-anim className="flex flex-wrap items-center gap-2.5 mb-6">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#4A8C2A]/20 border border-[#4A8C2A]/50 text-xs font-bold uppercase tracking-wider text-[#6DB33F] backdrop-blur-md shadow-[0_0_20px_rgba(109,179,63,0.18)]">
+                <span className="w-2 h-2 rounded-full bg-[#6DB33F] animate-ping" />
+                Restaurant • Café • Bar Excellence
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-[#F0F4EC] backdrop-blur-md">
+                <iconify-icon icon="solar:shield-check-linear" width="14" height="14" class="text-[#6DB33F]"></iconify-icon>
+                Nepal-Origin Platform
+              </span>
+            </div>
+
+            {/* Main Headline from HTML */}
+            <h1
+              data-hero-anim
+              className="font-extrabold text-[#F0F4EC] leading-[0.93] mb-6"
+              style={{
+                fontSize: "clamp(3.2rem, 6.8vw, 6.8rem)",
+                letterSpacing: "-0.065em",
+              }}
+            >
+              Better Service.
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#6DB33F] via-[#9FD96A] to-white">
+                Smarter Operations.
+              </span>
+              Stronger Business.
+            </h1>
+
+            {/* Subtext from HTML */}
+            <p
+              data-hero-anim
+              className="text-base sm:text-xl text-[#F0F4EC]/85 max-w-xl font-normal leading-relaxed mb-9"
+            >
+              Independent hospitality assessments, practical training, operational excellence, and measurable improvement plans for Nepal&apos;s restaurants, cafés, and bars.
+            </p>
+
+            {/* Hero CTAs */}
+            <div data-hero-anim className="flex flex-wrap items-center gap-4">
+              <a
+                href="#contact"
+                className="btn-primary px-8 py-4 rounded-full text-sm font-extrabold tracking-wide uppercase inline-flex items-center gap-2.5 shadow-[0_12px_36px_rgba(74,140,42,0.4)]"
+              >
+                <span>Request an Assessment</span>
+                <iconify-icon icon="solar:arrow-right-linear" width="18" height="18"></iconify-icon>
+              </a>
+              <a
+                href="#services"
+                className="px-7 py-4 rounded-full text-sm font-semibold text-[#F0F4EC] hover:text-white bg-white/5 hover:bg-white/10 border border-white/15 transition-all duration-200 backdrop-blur-sm flex items-center gap-2 group"
+              >
+                <span>Explore Services</span>
+                <iconify-icon icon="solar:arrow-right-linear" width="16" height="16" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+              </a>
+            </div>
+
+            {/* Social proof / Framework Metrics */}
+            <div data-hero-anim className="mt-12 pt-8 border-t border-white/10 grid grid-cols-3 gap-6 max-w-lg">
+              <div>
+                <div className="font-heading font-extrabold text-2xl lg:text-3xl text-[#6DB33F]">1,000</div>
+                <div className="text-xs text-[#F0F4EC]/65 mt-0.5 font-medium">Framework Points</div>
+              </div>
+              <div>
+                <div className="font-heading font-extrabold text-2xl lg:text-3xl text-[#6DB33F]">5-Step</div>
+                <div className="text-xs text-[#F0F4EC]/65 mt-0.5 font-medium">Improvement Cycle</div>
+              </div>
+              <div>
+                <div className="font-heading font-extrabold text-2xl lg:text-3xl text-[#6DB33F]">100%</div>
+                <div className="text-xs text-[#F0F4EC]/65 mt-0.5 font-medium">Independent Audit</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Hero Visual Card Stack (5 cols) */}
+          <div className="lg:col-span-5 hidden lg:block relative">
+            {/* Top decorative glass badge */}
+            <div className="absolute -top-5 -left-5 z-20 bg-[#0C1208]/90 border border-white/20 backdrop-blur-xl px-4 py-2 rounded-2xl shadow-xl flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-full bg-[#4A8C2A]/20 flex items-center justify-center text-[#6DB33F]">
+                <iconify-icon icon="solar:star-bold" width="18" height="18"></iconify-icon>
+              </div>
+              <div>
+                <div className="text-xs font-bold text-white leading-none">Mystery Visits</div>
+                <div className="text-[10px] text-[#6DB33F] mt-0.5">Objective Scoring</div>
+              </div>
+            </div>
+
+            {/* Main Showcase Card */}
+            <div className="relative rounded-3xl overflow-hidden border border-white/15 bg-gradient-to-b from-[#14230D]/80 to-[#0C1208]/90 backdrop-blur-2xl p-6 shadow-2xl">
+              <div className="aspect-[4/5] rounded-2xl overflow-hidden relative mb-5 group">
+                <img
+                  src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/43b80983-9fa2-4c0d-9cbc-19fcb75ccbea_1600w.png"
+                  alt="Operational hospitality assessment"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0C1208] via-transparent to-transparent opacity-80" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#6DB33F] bg-[#0C1208]/85 backdrop-blur-md px-2.5 py-1 rounded-md">
+                      Diagnostic Intelligence
+                    </span>
+                    <span className="text-xs text-white/90 font-mono font-bold">1,000 PTS</span>
+                  </div>
+                  <h3 className="font-heading text-lg font-bold text-white">
+                    Root-Cause Operational Audits
+                  </h3>
+                </div>
+              </div>
+
+              {/* Bottom pill highlights */}
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div className="p-3 rounded-xl bg-white/5 border border-white/10">
+                  <span className="text-[#6DB33F] font-bold block mb-0.5">Guest Experience</span>
+                  <span className="text-[11px] text-[#F0F4EC]/65 leading-tight block">
+                    First impressions, pacing & emotional resonance
+                  </span>
+                </div>
+                <div className="p-3 rounded-xl bg-white/5 border border-white/10">
+                  <span className="text-[#6DB33F] font-bold block mb-0.5">Kitchen SOPs</span>
+                  <span className="text-[11px] text-[#F0F4EC]/65 leading-tight block">
+                    Hygiene, speed of service & waste controls
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom floating badge */}
+            <div className="absolute -bottom-6 -right-4 z-20 bg-[#0C1208]/90 border border-white/20 backdrop-blur-xl px-4 py-2.5 rounded-2xl shadow-xl flex items-center gap-3">
+              <div className="w-2.5 h-2.5 rounded-full bg-[#6DB33F] animate-pulse"></div>
+              <div>
+                <div className="text-[11px] font-bold text-white">Owner-Focused Guidance</div>
+                <div className="text-[9px] text-[#F0F4EC]/60">Cost, margin & reputation impact</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 
+        ========================================================================
+        SECTION 2 - ABOUT SHM (OUR MISSION & VISION)
+        Slant: .slant-both with 4vw clip-path and -4vw margin overlap
+        Background: Light cream surface gradient from-[#F3F7EE] to-[#E8EFE0]
+        Text & Content: From SHM HTML About section
+        ========================================================================
+      */}
+      <section
+        id="about"
+        className="relative z-20 py-24 lg:py-36 bg-gradient-to-b from-[#F3F7EE] to-[#E8EFE0] text-[#0C1208] slant-both -mt-[4vw]"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-8">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="inline-block uppercase tracking-wider text-xs font-extrabold text-[#4A8C2A] bg-[#4A8C2A]/10 px-3.5 py-1.5 rounded-full mb-3">
+              About Smart Hospitality Management
+            </span>
+            <h2
+              className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#0C1208] leading-tight"
+              style={{ letterSpacing: "-0.04em" }}
+            >
+              International hospitality thinking, adapted to local businesses.
+            </h2>
+            <p className="mt-4 text-base sm:text-lg text-[#0C1208]/75 leading-relaxed">
+              SHM is an independent Nepal-origin hospitality performance advisory combining guest experience assessment, training, cost control, and owner-focused business improvement.
+            </p>
+          </div>
+
+          {/* 2-Card Mission & Vision Row */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Card 1: Our Mission */}
+            <div className="problem-card bg-white/95 backdrop-blur-md rounded-3xl p-8 sm:p-10 border border-[#0C1208]/10 shadow-[0_8px_32px_rgba(0,0,0,0.06)] hover:shadow-xl transition-all">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="inline-block uppercase tracking-wider text-[11px] font-extrabold text-[#4A8C2A] bg-[#4A8C2A]/10 px-3 py-1 rounded-full">
+                  Our Mission
+                </span>
+              </div>
+              <h3 className="font-heading font-extrabold text-2xl text-[#0C1208] mb-3">
+                Practical Excellence, Measurable Progress
+              </h3>
+              <p className="text-sm text-[#0C1208]/75 leading-relaxed">
+                Improve every guest touchpoint through mystery assessments and operational audits; build staff capability; strengthen profitability with menu engineering, cost controls, and digital visibility; provide owners with actionable performance insights.
+              </p>
+              <div className="mt-6 pt-5 border-t border-[#0C1208]/10 flex items-center gap-2 text-xs font-bold text-[#4A8C2A]">
+                <iconify-icon icon="solar:shield-check-linear" width="16" height="16"></iconify-icon>
+                <span>Owner-focused actionable insights</span>
+              </div>
+            </div>
+
+            {/* Card 2: Our Vision */}
+            <div className="problem-card bg-white/95 backdrop-blur-md rounded-3xl p-8 sm:p-10 border border-[#0C1208]/10 shadow-[0_8px_32px_rgba(0,0,0,0.06)] hover:shadow-xl transition-all">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="inline-block uppercase tracking-wider text-[11px] font-extrabold text-[#4A8C2A] bg-[#4A8C2A]/10 px-3 py-1 rounded-full">
+                  Our Vision
+                </span>
+              </div>
+              <h3 className="font-heading font-extrabold text-2xl text-[#0C1208] mb-3">
+                Trusted Hospitality Performance Partner
+              </h3>
+              <p className="text-sm text-[#0C1208]/75 leading-relaxed">
+                To become a trusted independent hospitality performance platform originating in Nepal and expanding across South Asia, supporting world-class service, data-driven management, and sustainable operations.
+              </p>
+              <div className="mt-6 pt-5 border-t border-[#0C1208]/10 flex items-center gap-2 text-xs font-bold text-[#4A8C2A]">
+                <iconify-icon icon="solar:star-bold" width="16" height="16"></iconify-icon>
+                <span>Expanding across South Asia</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 
+        ========================================================================
+        SECTION 3 - OUR SERVICES (WORKFLOW & BENTO)
+        Slant: .slant-top with dark gradient from-[#0E1509] to-[#1E2A12]
+        Z-index Overlap: -mt-[4vw]
+        Text & Content: All 6 services from SHM HTML:
+        Assess, Operate, Protect, Grow, Train, Connect
+        ========================================================================
+      */}
+      <section
+        id="services"
+        className="relative z-30 pt-28 pb-32 bg-gradient-to-b from-[#0E1509] to-[#1E2A12] text-[#F0F4EC] slant-top -mt-[4vw]"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="inline-block uppercase tracking-wider text-xs font-extrabold text-[#6DB33F] bg-[#6DB33F]/10 px-3.5 py-1.5 rounded-full mb-3">
+              Comprehensive Hospitality Advisory
+            </span>
+            <h2
+              className="text-3xl sm:text-5xl font-extrabold text-[#F0F4EC] leading-tight"
+              style={{ letterSpacing: "-0.04em" }}
+            >
+              Our Services
+            </h2>
+            <p className="mt-4 text-base text-[#F0F4EC]/80 leading-relaxed">
+              From guest experience to business results — services designed for independent hospitality operators.
+            </p>
+          </div>
+
+          {/* 6 Services Bento Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Service 1: ASSESS */}
+            <div className="bento-card rounded-3xl p-7 bg-[#0C1208]/80 border border-white/10 hover:border-[#6DB33F]/50 backdrop-blur-md transition-all flex flex-col justify-between group shadow-lg">
+              <div>
+                <span className="inline-block text-[11px] font-extrabold uppercase tracking-wider text-[#6DB33F] bg-[#6DB33F]/15 px-3 py-1 rounded-full mb-4">
+                  Assess
+                </span>
+                <h3 className="font-heading font-bold text-xl text-[#F0F4EC] mb-2 group-hover:text-[#6DB33F] transition-colors">
+                  Guest Service Assessments
+                </h3>
+                <p className="text-xs sm:text-sm text-[#F0F4EC]/75 leading-relaxed">
+                  Independent mystery visits, reservation and arrival checks, service quality, billing accuracy, and corrective-action reporting.
+                </p>
+              </div>
+              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#6DB33F] font-semibold">
+                <span>Mystery Visits</span>
+                <iconify-icon icon="solar:arrow-right-linear" width="16" height="16"></iconify-icon>
+              </div>
+            </div>
+
+            {/* Service 2: OPERATE */}
+            <div className="bento-card rounded-3xl p-7 bg-[#0C1208]/80 border border-white/10 hover:border-[#6DB33F]/50 backdrop-blur-md transition-all flex flex-col justify-between group shadow-lg">
+              <div>
+                <span className="inline-block text-[11px] font-extrabold uppercase tracking-wider text-[#6DB33F] bg-[#6DB33F]/15 px-3 py-1 rounded-full mb-4">
+                  Operate
+                </span>
+                <h3 className="font-heading font-bold text-xl text-[#F0F4EC] mb-2 group-hover:text-[#6DB33F] transition-colors">
+                  Restaurant Operations Audit
+                </h3>
+                <p className="text-xs sm:text-sm text-[#F0F4EC]/75 leading-relaxed">
+                  Review SOPs, shift handovers, hygiene, POS controls, inventory, complaints, and daily management systems.
+                </p>
+              </div>
+              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#6DB33F] font-semibold">
+                <span>SOP Compliance</span>
+                <iconify-icon icon="solar:arrow-right-linear" width="16" height="16"></iconify-icon>
+              </div>
+            </div>
+
+            {/* Service 3: PROTECT */}
+            <div className="bento-card rounded-3xl p-7 bg-[#0C1208]/80 border border-white/10 hover:border-[#6DB33F]/50 backdrop-blur-md transition-all flex flex-col justify-between group shadow-lg">
+              <div>
+                <span className="inline-block text-[11px] font-extrabold uppercase tracking-wider text-[#6DB33F] bg-[#6DB33F]/15 px-3 py-1 rounded-full mb-4">
+                  Protect
+                </span>
+                <h3 className="font-heading font-bold text-xl text-[#F0F4EC] mb-2 group-hover:text-[#6DB33F] transition-colors">
+                  Kitchen & Food Safety
+                </h3>
+                <p className="text-xs sm:text-sm text-[#F0F4EC]/75 leading-relaxed">
+                  Evaluate receiving, storage, allergen communication, sanitation, recipe consistency, and food quality.
+                </p>
+              </div>
+              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#6DB33F] font-semibold">
+                <span>Sanitation & Quality</span>
+                <iconify-icon icon="solar:shield-check-linear" width="16" height="16"></iconify-icon>
+              </div>
+            </div>
+
+            {/* Service 4: GROW */}
+            <div className="bento-card rounded-3xl p-7 bg-[#0C1208]/80 border border-white/10 hover:border-[#6DB33F]/50 backdrop-blur-md transition-all flex flex-col justify-between group shadow-lg">
+              <div>
+                <span className="inline-block text-[11px] font-extrabold uppercase tracking-wider text-[#6DB33F] bg-[#6DB33F]/15 px-3 py-1 rounded-full mb-4">
+                  Grow
+                </span>
+                <h3 className="font-heading font-bold text-xl text-[#F0F4EC] mb-2 group-hover:text-[#6DB33F] transition-colors">
+                  Menu & Profit Improvement
+                </h3>
+                <p className="text-xs sm:text-sm text-[#F0F4EC]/75 leading-relaxed">
+                  Menu engineering, food and beverage costs, waste reduction, average check optimization, table turnover, and contribution margins.
+                </p>
+              </div>
+              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#6DB33F] font-semibold">
+                <span>Margin Engineering</span>
+                <iconify-icon icon="solar:arrow-right-linear" width="16" height="16"></iconify-icon>
+              </div>
+            </div>
+
+            {/* Service 5: TRAIN */}
+            <div className="bento-card rounded-3xl p-7 bg-[#0C1208]/80 border border-white/10 hover:border-[#6DB33F]/50 backdrop-blur-md transition-all flex flex-col justify-between group shadow-lg">
+              <div>
+                <span className="inline-block text-[11px] font-extrabold uppercase tracking-wider text-[#6DB33F] bg-[#6DB33F]/15 px-3 py-1 rounded-full mb-4">
+                  Train
+                </span>
+                <h3 className="font-heading font-bold text-xl text-[#F0F4EC] mb-2 group-hover:text-[#6DB33F] transition-colors">
+                  SHM Academy
+                </h3>
+                <p className="text-xs sm:text-sm text-[#F0F4EC]/75 leading-relaxed">
+                  Frontline service, café and beverage skills, complaint recovery, supervisor coaching, and train-the-trainer programs.
+                </p>
+              </div>
+              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#6DB33F] font-semibold">
+                <span>Staff Capability</span>
+                <iconify-icon icon="solar:arrow-right-linear" width="16" height="16"></iconify-icon>
+              </div>
+            </div>
+
+            {/* Service 6: CONNECT */}
+            <div className="bento-card rounded-3xl p-7 bg-[#0C1208]/80 border border-white/10 hover:border-[#6DB33F]/50 backdrop-blur-md transition-all flex flex-col justify-between group shadow-lg">
+              <div>
+                <span className="inline-block text-[11px] font-extrabold uppercase tracking-wider text-[#6DB33F] bg-[#6DB33F]/15 px-3 py-1 rounded-full mb-4">
+                  Connect
+                </span>
+                <h3 className="font-heading font-bold text-xl text-[#F0F4EC] mb-2 group-hover:text-[#6DB33F] transition-colors">
+                  Digital Revenue & Reputation
+                </h3>
+                <p className="text-xs sm:text-sm text-[#F0F4EC]/75 leading-relaxed">
+                  Google Business Profile, local SEO, review management, direct inquiries, and responsible guest engagement.
+                </p>
+              </div>
+              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#6DB33F] font-semibold">
+                <span>Reputation & SEO</span>
+                <iconify-icon icon="solar:arrow-right-linear" width="16" height="16"></iconify-icon>
+              </div>
+            </div>
+          </div>
+
+          {/* 5-Step Improvement Cycle */}
+          <div className="mt-16 pt-12 border-t border-white/10">
+            <div className="text-center mb-8">
+              <span className="text-xs uppercase font-extrabold tracking-wider text-[#6DB33F]">
+                The Continuous Methodology
+              </span>
+              <h3 className="font-heading font-extrabold text-2xl text-[#F0F4EC] mt-1">
+                How SHM Works
+              </h3>
+            </div>
+            <div className="methodology-grid grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              {[
+                { step: "01", name: "Discover", desc: "Initial owner alignment & baseline expectations" },
+                { step: "02", name: "Assess", desc: "Mystery guest visit & operational checks" },
+                { step: "03", name: "Diagnose", desc: "1,000-point scoring & root cause analysis" },
+                { step: "04", name: "Improve", desc: "Targeted staff coaching & menu engineering" },
+                { step: "05", name: "Reassess", desc: "Verify measurable commercial gains" },
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className="methodology-step p-5 rounded-2xl bg-white/5 border border-white/10 text-center hover:bg-white/10 transition-colors"
+                >
+                  <div className="w-8 h-8 rounded-full bg-[#4A8C2A] text-[#0C1208] font-extrabold text-xs mx-auto mb-3 flex items-center justify-center">
+                    {item.step}
+                  </div>
+                  <h4 className="font-heading font-bold text-sm text-[#F0F4EC] mb-1">{item.name}</h4>
+                  <p className="text-[11px] text-[#F0F4EC]/65 leading-snug">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 
+        ========================================================================
+        SECTION 4 - WHO WE SERVE & WHY CHOOSE US
+        Slant: .slant-both
+        Z-index Overlap: -mt-[4vw]
+        Background: Light surface cream gradient from-[#F0F4EC] to-[#E2EBD6]
+        Content: Independent Restaurants, Cafes & Bakeries, Bars & Lounges, Multi-Outlet Groups, Boutique Hotels, Pre-Opening Businesses
+        Hover: Interactive Floating Preview on client segments (Substance Lab interaction)
+        ========================================================================
+      */}
+      <section
+        id="clients"
+        className="relative z-20 py-24 lg:py-36 bg-gradient-to-b from-[#F0F4EC] to-[#E2EBD6] text-[#0C1208] slant-both -mt-[4vw]"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-8">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="inline-block uppercase tracking-wider text-xs font-extrabold text-[#4A8C2A] bg-[#4A8C2A]/10 px-3.5 py-1.5 rounded-full mb-3">
+              Client Sectors
+            </span>
+            <h2
+              className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#0C1208] leading-tight"
+              style={{ letterSpacing: "-0.04em" }}
+            >
+              Who We Serve
+            </h2>
+            <p className="mt-4 text-base sm:text-lg text-[#0C1208]/75">
+              A practical performance partner for independent food-service businesses.
+            </p>
+          </div>
+
+          {/* Interactive Row-Based Capabilities / Client List */}
+          <div className="max-w-4xl mx-auto mb-20 divide-y divide-[#0C1208]/15 border-y border-[#0C1208]/15">
+            {[
+              {
+                title: "Independent Restaurants",
+                desc: "Service standards, kitchen coordination, menu performance and repeat business.",
+                preview: "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/5ca1f1c6-3233-49f9-a741-9ff10131fcb5_1600w.jpg",
+              },
+              {
+                title: "Cafés & Bakeries",
+                desc: "Speed, product consistency, customer care and takeaway operations.",
+                preview: "https://images.unsplash.com/photo-1770664945615-52203ab54c88?w=800&q=80",
+              },
+              {
+                title: "Bars & Lounges",
+                desc: "Beverage service, stock accountability and guest experience.",
+                preview: "https://images.unsplash.com/photo-1622122123829-e0490a288d04?w=800&q=80",
+              },
+              {
+                title: "Multi-Outlet Groups",
+                desc: "Consistent SOPs, outlet comparisons and management reporting.",
+                preview: "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/3ac110ad-4dc4-4e37-ad7b-367feb87ed83_1600w.jpg",
+              },
+              {
+                title: "Boutique Hotels & Resorts",
+                desc: "Tailored hospitality assessments as a secondary service offering.",
+                preview: "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/b5413203-6577-42c0-954e-3811b69415b0_3840w.png",
+              },
+              {
+                title: "Pre-Opening Businesses",
+                desc: "Concept readiness, staff training, operating standards and launch support.",
+                preview: "https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/43b80983-9fa2-4c0d-9cbc-19fcb75ccbea_1600w.png",
+              },
+            ].map((client, idx) => (
+              <div
+                key={idx}
+                onMouseEnter={() => {
+                  setCursorImg(client.preview);
+                  setCursorActive(true);
+                }}
+                onMouseLeave={() => setCursorActive(false)}
+                className="py-6 px-4 flex flex-col md:flex-row md:items-center justify-between gap-3 group hover:bg-[#4A8C2A]/10 transition-colors cursor-pointer rounded-xl"
+              >
+                <div className="flex items-center gap-4">
+                  <span className="text-xs font-mono font-bold text-[#4A8C2A]">0{idx + 1}</span>
+                  <h3 className="font-heading font-extrabold text-xl text-[#0C1208] group-hover:translate-x-2 transition-transform">
+                    {client.title}
+                  </h3>
+                </div>
+                <p className="text-xs sm:text-sm text-[#0C1208]/70 max-w-md">{client.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Why Choose an SHM Assessment */}
+          <div className="mt-16 pt-12 border-t border-[#0C1208]/10">
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <span className="text-xs font-extrabold uppercase tracking-wider text-[#4A8C2A]">
+                The Value Proposition
+              </span>
+              <h3 className="font-heading font-extrabold text-2xl sm:text-3xl text-[#0C1208] mt-1">
+                Why Choose an SHM Assessment?
+              </h3>
+              <p className="text-xs sm:text-sm text-[#0C1208]/70 mt-2">
+                Understand your operation, strengthen guest satisfaction, and uncover opportunities for improved commercial performance.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                { title: "Understand Your Business", text: "Discover what guests actually experience at every touchpoint." },
+                { title: "Improve Guest Satisfaction", text: "Identify service gaps and build stronger hospitality habits." },
+                { title: "Build Team Confidence", text: "Turn observations into practical coaching and SOPs." },
+                { title: "Improve Operations", text: "Reduce inconsistencies in service, kitchen, and inventory routines." },
+                { title: "Strengthen Commerciality", text: "Review menu margins, sales opportunities, and avoidable costs." },
+                { title: "Track Progress", text: "Use baseline KPIs and reassessment to verify improvements." },
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className="p-6 rounded-2xl bg-white/80 border border-[#0C1208]/10 shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <div className="w-7 h-7 rounded-lg bg-[#4A8C2A]/15 text-[#4A8C2A] flex items-center justify-center mb-3">
+                    <iconify-icon icon="solar:shield-check-linear" width="18" height="18"></iconify-icon>
+                  </div>
+                  <h4 className="font-heading font-bold text-base text-[#0C1208] mb-1">{item.title}</h4>
+                  <p className="text-xs text-[#0C1208]/70 leading-relaxed">{item.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 
+        ========================================================================
+        SECTION 5 - SHM ASSESSMENT STANDARDS & ACADEMY
+        Slant: .slant-top with dark ink gradient
+        Z-index Overlap: -mt-[4vw]
+        Content: Tabbed 1,000-Point Standards (Departments, Performance Criteria, Emotional Rating) with GSAP smooth tab switching
+        ========================================================================
+      */}
+      <section
+        id="standards"
+        className="relative z-30 pt-28 pb-32 bg-[#0C1208] text-[#F0F4EC] slant-top -mt-[4vw]"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <span className="inline-block uppercase tracking-wider text-xs font-extrabold text-[#6DB33F] bg-[#6DB33F]/10 px-3.5 py-1.5 rounded-full mb-3">
+              Proprietary Framework
+            </span>
+            <h2
+              className="text-3xl sm:text-5xl font-extrabold text-[#F0F4EC] leading-tight"
+              style={{ letterSpacing: "-0.04em" }}
+            >
+              SHM Assessment Standards
+            </h2>
+            <p className="mt-4 text-base text-[#F0F4EC]/75 leading-relaxed">
+              A proposed original 1,000-point SHM framework with service quality and emotional impact feedback. Subject to pilot testing and validation.
+            </p>
+
+            {/* Interactive Tab Switcher with Smooth State Handling */}
+            <div className="inline-flex p-1.5 rounded-full bg-white/10 border border-white/10 mt-8 gap-1 backdrop-blur-md shadow-lg">
+              <button
+                type="button"
+                onClick={() => handleTabChange("departments")}
+                className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer ${
+                  activeTab === "departments"
+                    ? "bg-[#4A8C2A] text-white shadow-[0_4px_16px_rgba(74,140,42,0.4)] scale-105"
+                    : "text-white/70 hover:text-white"
+                }`}
+              >
+                Departments
+              </button>
+              <button
+                type="button"
+                onClick={() => handleTabChange("performance")}
+                className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer ${
+                  activeTab === "performance"
+                    ? "bg-[#4A8C2A] text-white shadow-[0_4px_16px_rgba(74,140,42,0.4)] scale-105"
+                    : "text-white/70 hover:text-white"
+                }`}
+              >
+                Performance Criteria
+              </button>
+              <button
+                type="button"
+                onClick={() => handleTabChange("emotions")}
+                className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer ${
+                  activeTab === "emotions"
+                    ? "bg-[#4A8C2A] text-white shadow-[0_4px_16px_rgba(74,140,42,0.4)] scale-105"
+                    : "text-white/70 hover:text-white"
+                }`}
+              >
+                Emotional Rating
+              </button>
+            </div>
+          </div>
+
+          {/* Smooth animated tab content container */}
+          <div ref={tabsContainerRef} className="tab-content-enter">
+            {/* Tab 1: Departments */}
+            {activeTab === "departments" && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {[
+                  { tag: "GUEST WELCOME", text: "Reservations, greeting, seating and first impressions." },
+                  { tag: "DINING SERVICE", text: "Menu knowledge, attentiveness, order accuracy and farewell." },
+                  { tag: "KITCHEN & FOOD SAFETY", text: "Food hygiene, handling, preparation and culinary consistency." },
+                  { tag: "CAFÉ & BEVERAGE", text: "Drink quality, presentation and guest engagement." },
+                  { tag: "CLEANLINESS", text: "Dining area, washrooms, equipment and sanitation." },
+                  { tag: "COST & INVENTORY", text: "Purchasing, stock controls, waste, cash and profitability." },
+                  { tag: "DELIVERY & TAKEAWAY", text: "Order accuracy, packaging, dispatch and service recovery." },
+                  { tag: "PEOPLE & LEADERSHIP", text: "Training, shift management, coaching and staffing continuity." },
+                  { tag: "DIGITAL & SUSTAINABILITY", text: "Reputation, guest communication and responsible operations." },
+                ].map((item, idx) => (
+                  <div key={idx} className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#6DB33F]/40 transition-all hover:-translate-y-1 duration-200">
+                    <span className="inline-block text-[10px] font-extrabold uppercase tracking-wider text-[#6DB33F] bg-[#6DB33F]/15 px-2.5 py-1 rounded-md mb-2">
+                      {item.tag}
+                    </span>
+                    <p className="text-xs sm:text-sm text-[#F0F4EC]/85 mt-1 leading-relaxed">{item.text}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Tab 2: Performance Criteria */}
+            {activeTab === "performance" && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                {[
+                  { tag: "SERVICE", text: "Warmth, accuracy, menu knowledge and complaint handling." },
+                  { tag: "PRODUCT", text: "Food, beverage, presentation, atmosphere and consistency." },
+                  { tag: "EMOTIONAL INTELLIGENCE", text: "Empathy, personalization and guest recognition." },
+                  { tag: "CLEANLINESS", text: "Sanitation, safe food handling and facility care." },
+                  { tag: "EFFICIENCY", text: "Order flow, kitchen coordination and timely service." },
+                  { tag: "FOOD QUALITY", text: "Freshness, temperature, recipes and presentation." },
+                  { tag: "SALES OPPORTUNITY", text: "Helpful recommendations, repeat visits and margin awareness." },
+                  { tag: "SUSTAINABILITY", text: "Waste reduction and responsible sourcing." },
+                ].map((item, idx) => (
+                  <div key={idx} className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#6DB33F]/40 transition-all hover:-translate-y-1 duration-200">
+                    <span className="inline-block text-[10px] font-extrabold uppercase tracking-wider text-[#6DB33F] bg-[#6DB33F]/15 px-2.5 py-1 rounded-md mb-2">
+                      {item.tag}
+                    </span>
+                    <p className="text-xs sm:text-sm text-[#F0F4EC]/85 mt-1 leading-relaxed">{item.text}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Tab 3: Emotional Rating */}
+            {activeTab === "emotions" && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+                {[
+                  { tag: "VERY DISSATISFIED", text: "Neglected, frustrated or overlooked." },
+                  { tag: "DISSATISFIED", text: "Disappointed or disconnected." },
+                  { tag: "COMFORTABLE", text: "Respected, understood and comfortable." },
+                  { tag: "POSITIVELY ENGAGED", text: "Appreciated, delighted and valued." },
+                  { tag: "MEMORABLE EXPERIENCE", text: "Recognized, special and genuinely cared for." },
+                ].map((item, idx) => (
+                  <div key={idx} className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#6DB33F]/40 transition-all hover:-translate-y-1 duration-200 text-center">
+                    <span className="inline-block text-[10px] font-extrabold uppercase tracking-wider text-[#6DB33F] bg-[#6DB33F]/15 px-2.5 py-1 rounded-md mb-2">
+                      {item.tag}
+                    </span>
+                    <p className="text-xs sm:text-sm text-[#F0F4EC]/85 mt-1 leading-relaxed">{item.text}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Proposed Scoring Breakdown (1,000 Points) */}
+          <div className="mt-20 pt-16 border-t border-white/10">
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <span className="text-xs uppercase font-extrabold tracking-wider text-[#6DB33F]">
+                Scoring Weight Distribution
+              </span>
+              <h3 className="font-heading font-extrabold text-2xl sm:text-3xl text-[#F0F4EC] mt-1">
+                Our Proposed Scoring Framework
+              </h3>
+              <p className="text-xs text-[#F0F4EC]/65 mt-1">
+                Original SHM planning weights — not LQA criteria or an existing certification.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              {[
+                { pts: "250", label: "Guest Service & Emotional Experience" },
+                { pts: "150", label: "Operations & SOP Compliance" },
+                { pts: "100", label: "Product & Facility Quality" },
+                { pts: "150", label: "Revenue & Sales Performance" },
+                { pts: "150", label: "Cost & Profit Controls" },
+                { pts: "100", label: "People & Leadership" },
+                { pts: "60", label: "Digital & Reputation" },
+                { pts: "40", label: "Sustainability, Safety & Local Value" },
+                { pts: "1,000", label: "Total Proposed Points", highlight: true },
+              ].map((box, idx) => (
+                <div
+                  key={idx}
+                  className={`p-5 rounded-2xl border text-center transition-transform hover:-translate-y-1 ${
+                    box.highlight
+                      ? "bg-[#4A8C2A]/20 border-[#4A8C2A] col-span-2 sm:col-span-1 shadow-[0_0_24px_rgba(74,140,42,0.25)]"
+                      : "bg-white/5 border-white/10"
+                  }`}
+                >
+                  <div className="font-heading font-extrabold text-3xl text-[#6DB33F]">{box.pts}</div>
+                  <div className="text-xs text-[#F0F4EC]/75 mt-1 font-medium">{box.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* SHM Academy Section (From HTML) */}
+          <div id="academy" className="mt-24 pt-16 border-t border-white/10">
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <span className="inline-block uppercase tracking-wider text-xs font-extrabold text-[#6DB33F] bg-[#6DB33F]/10 px-3.5 py-1.5 rounded-full mb-3">
+                Workforce Development
+              </span>
+              <h3 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#F0F4EC]">
+                SHM Academy
+              </h3>
+              <p className="text-sm text-[#F0F4EC]/75 mt-2">
+                Building service confidence, operating discipline, and stronger leadership through practical hospitality training.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                { title: "Service Foundations", desc: "Guest welcome, reservations, table service and farewell." },
+                { title: "Guest Recovery", desc: "Listening, empathy, complaint ownership and follow-up." },
+                { title: "Food & Beverage Skills", desc: "Menu knowledge, café service, quality and thoughtful recommendations." },
+                { title: "Kitchen Coordination", desc: "Food safety awareness, service timing and teamwork." },
+                { title: "Restaurant Profitability", desc: "Recipe costing, menu engineering, inventory and waste." },
+                { title: "Leadership & Coaching", desc: "Supervisory standards, training and performance conversations." },
+              ].map((course, idx) => (
+                <div key={idx} className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition-all hover:-translate-y-1">
+                  <h4 className="font-heading font-bold text-lg text-[#F0F4EC] mb-2">{course.title}</h4>
+                  <p className="text-xs sm:text-sm text-[#F0F4EC]/70 leading-relaxed">{course.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 
+        ========================================================================
+        SECTION 6 - START YOUR IMPROVEMENT JOURNEY (QUOTE & CONTACT)
+        - Substance Lab Parallax Footer Headings: -0.3 negative speed multiplier
+        - Exact Form fields from SHM HTML: Business Name, Business Type, Contact Email, What would you like to improve?
+        ========================================================================
+      */}
+      <section id="contact" className="relative py-28 lg:py-36 overflow-hidden">
+        {/* Full-width background image with deep ink gradient overlays */}
+        <div className="absolute inset-0 -z-10">
+          <img
+            src="https://images.unsplash.com/photo-1558864255-eced94afc9ec?w=3840&q=80"
+            alt="Hospitality excellence backdrop"
+            className="w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0C1208] via-[#0C1208]/90 to-[#0C1208]" />
+        </div>
+
+        {/* Substance Lab Style Large Cropped Parallax Wordmark */}
+        <div className="parallax-wordmark pointer-events-none select-none text-center overflow-hidden opacity-25 mb-4">
+          <span className="font-heading font-extrabold text-[12vw] sm:text-[14vw] leading-none text-outline-stroke whitespace-nowrap block">
+            HOSPITALITY
+          </span>
+        </div>
+
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="inline-block uppercase tracking-wider text-xs font-extrabold text-[#6DB33F] bg-[#6DB33F]/10 px-3.5 py-1.5 rounded-full mb-3">
+              Get Started
+            </span>
+            <h2
+              className="text-3xl sm:text-5xl font-extrabold text-[#F0F4EC] leading-tight mb-4"
+              style={{ letterSpacing: "-0.04em" }}
+            >
+              Start Your Improvement Journey
+            </h2>
+            <p className="text-sm sm:text-base text-[#F0F4EC]/80">
+              Request a consultation. This is a prototype form: it does not transmit or store your details.
+            </p>
+          </div>
+
+          {/* Form Card */}
+          <div className="bg-[#0C1208]/85 backdrop-blur-xl rounded-3xl border border-white/15 p-8 sm:p-12 shadow-2xl">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                alert(
+                  "Prototype only: no request has been sent. Please connect this form to a secure service before publishing."
+                );
+              }}
+              className="space-y-6"
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {/* Business Name */}
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#F0F4EC]/80 mb-2">
+                    Business Name
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Restaurant or café name"
+                    className="w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/15 text-[#F0F4EC] placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#4A8C2A] transition-all"
+                  />
+                </div>
+
+                {/* Business Type */}
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#F0F4EC]/80 mb-2">
+                    Business Type
+                  </label>
+                  <select
+                    required
+                    defaultValue=""
+                    className="w-full px-4 py-3.5 rounded-xl bg-[#0C1208] border border-white/15 text-[#F0F4EC] focus:outline-none focus:ring-2 focus:ring-[#4A8C2A] transition-all"
+                  >
+                    <option value="" disabled className="text-white/40">
+                      Select
+                    </option>
+                    <option value="Restaurant">Restaurant</option>
+                    <option value="Cafe / Bakery">Café / Bakery</option>
+                    <option value="Bar / Lounge">Bar / Lounge</option>
+                    <option value="Multi-outlet">Multi-outlet</option>
+                    <option value="Hotel / Resort">Hotel / Resort</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Contact Email */}
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#F0F4EC]/80 mb-2">
+                  Contact Email
+                </label>
+                <input
+                  type="email"
+                  required
+                  placeholder="you@example.com"
+                  className="w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/15 text-[#F0F4EC] placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#4A8C2A] transition-all"
+                />
+              </div>
+
+              {/* What would you like to improve? */}
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#F0F4EC]/80 mb-2">
+                  What would you like to improve?
+                </label>
+                <textarea
+                  rows={4}
+                  placeholder="Service, training, cost control, guest experience..."
+                  className="w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/15 text-[#F0F4EC] placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#4A8C2A] transition-all resize-none"
+                ></textarea>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="w-full btn-primary py-4 rounded-xl text-sm font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-xl"
+              >
+                <span>Request Consultation (Demo)</span>
+                <iconify-icon icon="solar:arrow-right-linear" width="18" height="18"></iconify-icon>
+              </button>
+
+              <p className="text-[11px] text-[#F0F4EC]/50 text-center">
+                Demo only. Contact information and backend services are not yet configured.
+              </p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      {/* 
+        ========================================================================
+        FOOTER (From SHM HTML + Substance Lab 3x3 dot brand mark)
+        ========================================================================
+      */}
+      <footer className="border-t border-white/10 bg-[#0C1208] py-14 px-4 sm:px-6 lg:px-8 text-xs text-[#F0F4EC]/65">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+          {/* Brand Info */}
+          <div>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="grid grid-cols-3 gap-1 p-1 rounded bg-white/5 border border-white/10">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#6DB33F]"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-white/90"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-white/90"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-white/90"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-white/90"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#6DB33F]"></span>
+              </div>
+              <span className="font-heading font-extrabold text-lg text-white">SHM</span>
+            </div>
+            <p className="text-[11px] uppercase tracking-wider text-[#6DB33F] font-bold mb-2">
+              Restaurant • Café • Bar Excellence
+            </p>
+            <p className="text-xs text-[#F0F4EC]/60 leading-relaxed">
+              Independent Nepal-origin hospitality performance advisory combining guest experience assessment, training, cost control, and business improvement.
+            </p>
+          </div>
+
+          {/* Who We Serve */}
+          <div>
+            <h4 className="font-heading font-bold text-sm text-[#6DB33F] uppercase tracking-wider mb-4">
+              Who We Serve
+            </h4>
+            <div className="space-y-2.5">
+              <a href="#clients" className="block hover:text-white transition-colors">
+                Independent Restaurants
+              </a>
+              <a href="#clients" className="block hover:text-white transition-colors">
+                Cafés & Bakeries
+              </a>
+              <a href="#clients" className="block hover:text-white transition-colors">
+                Bars & Lounges
+              </a>
+              <a href="#clients" className="block hover:text-white transition-colors">
+                Small Groups
+              </a>
+            </div>
+          </div>
+
+          {/* Our Services */}
+          <div>
+            <h4 className="font-heading font-bold text-sm text-[#6DB33F] uppercase tracking-wider mb-4">
+              Our Services
+            </h4>
+            <div className="space-y-2.5">
+              <a href="#services" className="block hover:text-white transition-colors">
+                SHM Assessments
+              </a>
+              <a href="#services" className="block hover:text-white transition-colors">
+                Operations Audits
+              </a>
+              <a href="#academy" className="block hover:text-white transition-colors">
+                SHM Academy
+              </a>
+              <a href="#standards" className="block hover:text-white transition-colors">
+                SHM Standards
+              </a>
+            </div>
+          </div>
+
+          {/* Get Started */}
+          <div>
+            <h4 className="font-heading font-bold text-sm text-[#6DB33F] uppercase tracking-wider mb-4">
+              Get Started
+            </h4>
+            <div className="space-y-2.5">
+              <a href="#about" className="block hover:text-white transition-colors">
+                About Us
+              </a>
+              <a href="#contact" className="block hover:text-white transition-colors">
+                Contact Us
+              </a>
+              <a href="#contact" className="block hover:text-white transition-colors">
+                Request Consultation
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Legal from HTML */}
+        <div className="max-w-7xl mx-auto pt-8 border-t border-white/10 text-center text-[11px] text-[#F0F4EC]/50">
+          © 2026 Smart Hospitality Management (SHM). Website prototype for review. Original SHM concept; not affiliated with LQA or Forbes Travel Guide. Privacy and legal pages to be prepared before launch.
+        </div>
+      </footer>
+    </div>
+  );
+}
