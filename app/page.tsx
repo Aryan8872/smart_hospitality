@@ -13,31 +13,44 @@ import { Academy } from "./components/sections/Academy";
 import { HowSHMWorks } from "./components/sections/HowSHMWorks";
 import { Contact } from "./components/sections/Contact";
 import { Footer } from "./components/sections/Footer";
+import { Preloader } from "./components/ui/Preloader";
+import { CustomCursor } from "./components/ui/CustomCursor";
+import { useAnimations } from "./hooks/useAnimations";
 
 export default function SmartHospitalityLanding() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // Entrance + scroll animations start when the preloader curtain lifts.
+  const [revealed, setRevealed] = useState(false);
+  useAnimations(revealed);
 
   return (
-    <div className="w-full bg-[#FBFAF7] text-[#12281A] antialiased overflow-x-hidden">
-      <Navbar
-        mobileMenuOpen={mobileMenuOpen}
-        setMobileMenuOpen={setMobileMenuOpen}
-      />
+    <>
+      {/* .wrapper is the opaque page that slides up over the fixed footer
+          (see the FOOTER REVEAL block in globals.css). */}
+      <div className="wrapper w-full bg-[#FBFAF7] text-[#12281A] antialiased [overflow-x:clip]">
+        <Preloader onReveal={() => setRevealed(true)} />
+        <CustomCursor />
+        <Navbar
+          mobileMenuOpen={mobileMenuOpen}
+          setMobileMenuOpen={setMobileMenuOpen}
+        />
 
-      <main>
-        <Hero />
-        <About />
-        <Services />
-        <WhoWeServe />
-        <WhyChooseSHM />
-        <Standards />
-        <ScoringFramework />
-        <Academy />
-        <HowSHMWorks />
-        <Contact />
-      </main>
+        <main>
+          <Hero />
+          <About />
+          <Services />
+          <WhoWeServe />
+          <WhyChooseSHM />
+          <Standards />
+          <ScoringFramework />
+          <Academy />
+          <HowSHMWorks />
+          <Contact />
+        </main>
+      </div>
 
+      {/* Sits behind .wrapper — revealed by the last 100svh of scroll. */}
       <Footer />
-    </div>
+    </>
   );
 }

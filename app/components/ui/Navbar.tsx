@@ -30,29 +30,29 @@ export const Navbar: React.FC<NavbarProps> = ({
             SHM
           </span>
         </a>
-        <div className="hidden md:flex items-center gap-1 text-sm text-black/60">
-          <a href="#about" className="px-3 py-1.5 rounded-full hover:text-black hover:bg-black/5 transition-colors duration-300">
+        <div className="hidden lg:flex items-center gap-1 text-sm text-black/60">
+          <a href="#about" className="whitespace-nowrap px-3 py-1.5 rounded-full hover:text-black hover:bg-black/5 transition-colors duration-300">
             About
           </a>
-          <a href="#services" className="px-3 py-1.5 rounded-full hover:text-black hover:bg-black/5 transition-colors duration-300">
+          <a href="#services" className="whitespace-nowrap px-3 py-1.5 rounded-full hover:text-black hover:bg-black/5 transition-colors duration-300">
             Services
           </a>
-          <a href="#who-we-serve" className="px-3 py-1.5 rounded-full hover:text-black hover:bg-black/5 transition-colors duration-300">
+          <a href="#who-we-serve" className="whitespace-nowrap px-3 py-1.5 rounded-full hover:text-black hover:bg-black/5 transition-colors duration-300">
             Who We Serve
           </a>
-          <a href="#standards" className="px-3 py-1.5 rounded-full hover:text-black hover:bg-black/5 transition-colors duration-300">
+          <a href="#standards" className="whitespace-nowrap px-3 py-1.5 rounded-full hover:text-black hover:bg-black/5 transition-colors duration-300">
             Standards
           </a>
-          <a href="#academy" className="px-3 py-1.5 rounded-full hover:text-black hover:bg-black/5 transition-colors duration-300">
+          <a href="#academy" className="whitespace-nowrap px-3 py-1.5 rounded-full hover:text-black hover:bg-black/5 transition-colors duration-300">
             Academy
           </a>
         </div>
-        <a href="#contact" className="ml-1 sm:ml-2 bg-[#1E4D33] hover:bg-[#2A6647] active:scale-95 text-white text-sm font-medium px-4 sm:px-5 py-2 rounded-full transition-all duration-300 whitespace-nowrap shadow-lg shadow-[#1E4D33]/30">
+        <a href="#contact" className="shrink-0 ml-1 sm:ml-2 bg-[#1E4D33] hover:bg-[#2A6647] active:scale-95 text-white text-sm font-medium px-4 sm:px-5 py-2 rounded-full transition-all duration-300 whitespace-nowrap shadow-lg shadow-[#1E4D33]/30">
           Contact
         </a>
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden ml-1 p-2 rounded-full hover:bg-black/5 transition-colors"
+          className="lg:hidden shrink-0 ml-1 p-2 rounded-full hover:bg-black/5 transition-colors"
           aria-label="Toggle menu"
         >
           <span className="block w-5 h-0.5 bg-black transition-all"></span>

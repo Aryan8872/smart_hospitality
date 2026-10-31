@@ -8,8 +8,8 @@ export const Contact: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-5 gap-16 lg:gap-8">
         <div className="lg:col-span-3 lg:pr-12">
           <span className="block text-[#B89856] text-xs uppercase tracking-widest font-medium mb-4">Contact</span>
-          <h2 className="font-heading text-3xl md:text-5xl font-bold tracking-tight text-stone-900 mb-6">Start Your Journey</h2>
-          <p className="text-stone-500 text-sm md:text-base mb-10">Request a consultation — prototype form, no data transmission</p>
+          <h2 className="font-heading split-animate text-3xl md:text-5xl font-light tracking-tighter text-[#12281A] mb-6">Start Your Journey</h2>
+          <p className="text-stone-500 text-sm md:text-base mb-10 split-animate">Request a consultation — prototype form, no data transmission</p>
 
           <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">

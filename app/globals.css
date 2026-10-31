@@ -1,81 +1,310 @@
 @import "tailwindcss";
 
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: 'Sora', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-serif: Georgia, 'Times New Roman', serif;
 }
 
 body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
+  background-color: #FBFAF7;
   color: #12281A;
-  background: #FBFAF7;
+  margin: 0;
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Sora', sans-serif;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+.font-heading {
+  font-family: var(--font-heading);
 }
 
-h1 {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  letter-spacing: -0.03em;
-  font-weight: 300;
-  line-height: 0.95;
-}
-
-h2 {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  letter-spacing: -0.02em;
-  font-weight: 300;
-}
-
-h3 {
-  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-  letter-spacing: -0.01em;
-  font-weight: 300;
+.font-serif {
+  font-family: var(--font-serif);
 }
 
 .font-mono {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
 }
 
-/* Drift animations */
-@keyframes drift1 {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(30px, -40px) rotate(8deg); }
+/* ============================================================
+   TEXT REVEAL
+   Word-by-word "rise from behind a mask" reveal.
+   Mirrors the AURUM "Beyond the Skyline" pattern:
+     .word-wrap   → inline-block clip mask
+     .word-inner  → the moving word (hidden state set by GSAP)
+   .split-words uses display:contents so the wrapper never
+   disturbs flex / grid / inline layout of the host element.
+   ============================================================ */
+.word-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* room for descenders (g, y, p) inside the clip mask */
+  padding-bottom: 0.12em;
 }
 
-@keyframes drift2 {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(-40px, 30px) rotate(-6deg); }
+.word-inner {
+  display: inline-block;
 }
 
-@keyframes drift3 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(20px, 50px) scale(1.05); }
+.word-inner > * {
+  /* atomic block children (e.g. meta columns) keep their own layout */
+  display: block;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+.split-words {
+  display: contents;
+}
+
+/* Hero headline lines: hidden from first paint, GSAP owns the transform. */
+.hero-line-inner {
+  display: block;
+  transform: translateY(110%);
+  will-change: transform;
+}
+
+.selection\:bg-\[\#42A85D\]::-moz-selection {
+  background-color: #42A85D;
+  color: black;
+}
+
+.selection\:text-black::-moz-selection {
+  color: black;
+}
+
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #FAF9F6;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, background 0.3s;
+}
+
+.cursor.active {
+  width: 64px;
+  height: 64px;
+  background: rgba(250, 249, 246, 0.1);
+  backdrop-filter: blur(2px);
+  border: 1px solid rgba(250, 249, 246, 0.5);
+}
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #1E4D33;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #FBFAF7;
+  flex-direction: column;
+}
+
+.preloader-text {
+  font-size: clamp(1.5rem, 3.2vw, 2.25rem);
+  line-height: 1.2;
+  overflow: hidden;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+/* The wordmark starts behind its own clip mask. Preloader.tsx lifts it
+   with `fromTo(yPercent: 100 → 0)`; keeping the hidden state in CSS
+   means no flash of text before the timeline has started. */
+.preloader-text span {
+  display: inline-block;
+  transform: translateY(100%);
+  will-change: transform;
+}
+
+.preloader-progress {
+  width: 160px;
+  height: 1px;
+  background: rgba(251, 250, 247, 0.2);
+  margin-top: 24px;
+  overflow: hidden;
+}
+
+.preloader-bar {
+  width: 0%;
+  height: 100%;
+  background: #FBFAF7;
+}
+
+/* --- CARD STACK SECTION --- */
+.stack-section {
+  padding: 10vh 0;
+  background: #0c0a0c;
+  color: #E3E1DC;
+  position: relative;
+}
+
+.stack-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  padding-bottom: 10vh;
+}
+
+.card-item {
+  position: sticky;
+  top: 10vh;
+  height: 80vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5vh;
+}
+
+.card-inner {
+  width: 90%;
+  height: 100%;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+}
+
+.card-content {
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #1a1a1a;
+  z-index: 2;
+}
+
+.card-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #2a2a2a;
+}
+
+@media (max-width: 768px) {
+  .card-inner { grid-template-columns: 1fr; }
+  .card-item { top: 5vh; height: 85vh; }
+  .card-img-wrap { height: 50%; order: -1; }
+  .card-content { padding: 2rem; }
+}
+
+/* ============================================================
+   CARD STACK · LIGHT VARIANT
+   Keeps every piece of the sticky-stack mechanics above (position,
+   heights, grid, the GSAP scale/opacity scrub) and only re-themes
+   colour, so the section sits in the cream / ink / gold rhythm of
+   the blocks around it instead of cutting the page with near-black.
+   ============================================================ */
+.stack-section--light {
+  background: #FBFAF7;
+  color: #12281A;
+  border-top: 1px solid rgba(18, 40, 26, 0.08);
+  border-bottom: 1px solid rgba(18, 40, 26, 0.08);
+}
+
+.stack-section--light .card-inner {
+  background: #ffffff;
+  border: 1px solid rgba(18, 40, 26, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(18, 40, 26, 0.16);
+}
+
+.stack-section--light .card-content {
+  background: #ffffff;
+}
+
+.stack-section--light .card-img-wrap {
+  background: #f2f5f1;
+}
+
+/* hairline between the copy column and the icon panel (desktop only —
+   on mobile the panel stacks above the copy) */
+@media (min-width: 769px) {
+  .stack-section--light .card-content {
+    border-right: 1px solid rgba(18, 40, 26, 0.08);
   }
 }
 
-::selection {
-  background: #42A85D;
-  color: black;
+/* On mobile the media panel stacks on top of the copy and, with the emoji
+   gone, would collapse to a thin strip — give it a real floor. `card-inner`
+   has a fixed height, so this trades space with the copy column and does not
+   change page height. */
+@media (max-width: 768px) {
+  .stack-section--light .card-img-wrap {
+    height: auto;
+    min-height: 190px;
+  }
+}
+
+/* ============================================================
+   FOOTER REVEAL  (AURUM pattern)
+   .wrapper is the opaque page and reserves one screen of scroll
+   with margin-bottom. The footer is fixed underneath at z-index 1,
+   so that final screen of scrolling slides the page up and uncovers
+   the footer instead of the footer simply being the last block.
+   `.footer-sticky` height and `.wrapper` margin must stay in the
+   same unit, otherwise a sliver of body colour (or clipped footer)
+   shows up at the end of the scroll.
+   ============================================================ */
+.wrapper {
+  position: relative;
+  z-index: 10;
+  background-color: #FBFAF7;
+  margin-bottom: 100vh;
+  margin-bottom: 100svh;
+  box-shadow: 0 40px 90px rgba(18, 40, 26, 0.35);
+}
+
+.footer-sticky {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  z-index: 1;
+  background: #1E4D33;
+  color: #FBFAF7;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* ============================================================
+   REDUCED MOTION
+   Everything renders in its final state. No masked text, no
+   scroll-scrubbed transforms, no curtain.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .word-inner,
+  .hero-line-inner {
+    transform: none !important;
+  }
+
+  .hero-fade {
+    opacity: 1 !important;
+  }
+
+  .preloader {
+    display: none;
+  }
 }
