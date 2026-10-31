@@ -61,7 +61,7 @@ export const About: React.FC = () => {
 
           <p className="text-base md:text-lg font-light leading-relaxed text-black/60 mb-5 split-animate">
             International hospitality thinking, adapted to local businesses.
-            SHM is a proposed independent Nepal-origin hospitality performance
+            SHMG is a proposed independent Nepal-origin hospitality performance
             advisory combining guest experience assessment, training, cost
             control and owner-focused business improvement.
           </p>

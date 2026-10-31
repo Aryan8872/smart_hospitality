@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SHM | Smart Hospitality Management",
+  title: "SHMG | Smart Hospitality Management",
   description:
     "Independent hospitality assessments, practical training, operational excellence, and measurable improvement plans for Nepal's restaurants, cafés, and bars.",
 };

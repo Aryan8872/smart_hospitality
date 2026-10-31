@@ -9,11 +9,11 @@ export const Standards: React.FC = () => {
     <section className="py-24 md:py-32 bg-stone-50 border-t border-stone-100" id="standards">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16 md:mb-20 max-w-2xl mx-auto">
-          <span className="block text-[#B89856] text-xs uppercase tracking-widest font-medium mb-4">SHM Standards</span>
+          <span className="block text-[#B89856] text-xs uppercase tracking-widest font-medium mb-4">SHMG Standards</span>
           <h2 className="font-heading split-animate text-3xl md:text-5xl font-light tracking-tighter text-[#12281A] mb-6">
             Assessment Standards
           </h2>
-          <p className="text-sm md:text-base text-stone-500 split-animate">A proposed original 1,000-point SHM framework with service quality and emotional impact feedback</p>
+          <p className="text-sm md:text-base text-stone-500 split-animate">A proposed original 1,000-point SHMG framework with service quality and emotional impact feedback</p>
         </div>
         
         <div className="flex justify-center mb-12">

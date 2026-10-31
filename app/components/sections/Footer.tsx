@@ -102,8 +102,8 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="mx-auto mt-16 max-w-2xl text-[10px] leading-relaxed text-[#FBFAF7]/35">
-          © 2026 Smart Hospitality Management (SHM). Website prototype for
-          review. Original SHM concept — not affiliated with LQA or Forbes
+          © 2026 Smart Hospitality Management (SHMG). Website prototype for
+          review. Original SHMG concept — not affiliated with LQA or Forbes
           Travel Guide. Privacy and legal pages to be prepared before launch.
         </div>
       </div>

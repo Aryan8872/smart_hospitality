@@ -40,7 +40,6 @@ export const Contact: React.FC = () => {
             <button className="w-full sm:w-auto bg-stone-900 text-white px-10 py-4 text-sm font-medium hover:bg-[#B89856] transition-colors duration-300 mt-4" type="submit">
               Request Consultation (Demo)
             </button>
-            <p className="text-sm text-stone-400">Demo only — backend not configured</p>
           </form>
         </div>
 

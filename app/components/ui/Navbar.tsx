@@ -27,7 +27,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="w-1 h-1 rounded-full bg-[#42A85D]"></span>
           </span>
           <span className="font-heading font-semibold text-sm tracking-tight whitespace-nowrap">
-            SHM
+            SHMG
           </span>
         </a>
         <div className="hidden lg:flex items-center gap-1 text-sm text-black/60">
