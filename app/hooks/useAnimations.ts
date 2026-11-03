@@ -171,6 +171,15 @@ const showFinishedState = () => {
   document.querySelectorAll<HTMLElement>(".hero-fade").forEach((el) => {
     el.style.opacity = "1";
   });
+  document.querySelectorAll<HTMLElement>(".reveal-up").forEach((el) => {
+    el.style.opacity = "1";
+    el.style.transform = "none";
+  });
+  document
+    .querySelectorAll<HTMLElement>(".score-bar > span")
+    .forEach((el) => {
+      el.style.transform = "scaleX(1)";
+    });
 };
 
 export const useAnimations = (revealed: boolean) => {
@@ -226,14 +235,114 @@ export const useAnimations = (revealed: boolean) => {
       if (tween.scrollTrigger) keys.push(tween.scrollTrigger);
     });
 
-    // 3. Hero parallax
-    const heroImg = document.querySelector(".hero-img");
-    if (heroImg) {
-      const tween = gsap.to(heroImg, {
-        yPercent: 30,
-        ease: "none",
+    // 2b. "About SHMG /" char-by-char reveal — same signature as portfolio
+    //     WhatIDo title. Each char is wrapped in an overflow-hidden outer span
+    //     (the clip) with an inner animated span (the actual element).
+    document.querySelectorAll<HTMLElement>(".what-i-do-title").forEach((el) => {
+      // The inner spans are the direct children's first child (the animated element)
+      const outerSpans = Array.from(el.querySelectorAll<HTMLElement>(":scope > span"));
+      const innerSpans = outerSpans
+        .map((s) => s.querySelector<HTMLElement>("span"))
+        .filter(Boolean) as HTMLElement[];
+
+      if (!innerSpans.length) return;
+
+      gsap.set(innerSpans, { yPercent: 105 });
+
+      const tween = gsap.to(innerSpans, {
+        yPercent: 0,
+        duration: 0.7,
+        ease: "power4.out",
+        stagger: 0.03,
+        force3D: true,
         scrollTrigger: {
-          trigger: heroImg,
+          trigger: el,
+          start: "top 80%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      tweens.push(tween);
+      if (tween.scrollTrigger) keys.push(tween.scrollTrigger);
+    });
+
+    // 3. Generic fade-up reveals (cards, rows, panels).
+    document.querySelectorAll<HTMLElement>(".reveal-up").forEach((el) => {
+      const tween = gsap.fromTo(
+        el,
+        { y: 38, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 88%",
+            toggleActions: "play none none reverse",
+          },
+        },
+      );
+      tweens.push(tween);
+      if (tween.scrollTrigger) keys.push(tween.scrollTrigger);
+
+      // Bars inside the row draw in with the same trigger.
+      const bars = el.querySelectorAll<HTMLElement>(".score-bar > span");
+      if (bars.length) {
+        const barTween = gsap.fromTo(
+          bars,
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            transformOrigin: "left center",
+            duration: 1.2,
+            stagger: 0.08,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 88%",
+              toggleActions: "play none none reverse",
+            },
+          },
+        );
+        tweens.push(barTween);
+        if (barTween.scrollTrigger) keys.push(barTween.scrollTrigger);
+      }
+    });
+
+    // 5. Editorial image parallax.
+    document.querySelectorAll<HTMLElement>(".parallax-img").forEach((img) => {
+      if (!img.parentElement) return;
+      // Overscan so the vertical drift never exposes an edge.
+      gsap.set(img, { scale: 1.14 });
+      const tween = gsap.fromTo(
+        img,
+        { yPercent: -4 },
+        {
+          yPercent: 4,
+          ease: "none",
+          scrollTrigger: {
+            trigger: img.parentElement,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        },
+      );
+      tweens.push(tween);
+      if (tween.scrollTrigger) keys.push(tween.scrollTrigger);
+    });
+
+    // 6. Hero scroll scrub animation matching portfolio #hero-content
+    const heroContent = document.querySelector("#hero-content");
+    if (heroContent) {
+      const tween = gsap.to(heroContent, {
+        opacity: 0.45,
+        scale: 0.92,
+        ease: "none",
+        force3D: true,
+        scrollTrigger: {
+          trigger: "#top",
           start: "top top",
           end: "bottom top",
           scrub: true,
@@ -241,6 +350,43 @@ export const useAnimations = (revealed: boolean) => {
       });
       tweens.push(tween);
       if (tween.scrollTrigger) keys.push(tween.scrollTrigger);
+    }
+
+    // 7. Pointer parallax on the hero arch — fine pointers only.
+    const hero = document.querySelector<HTMLElement>("#top");
+    const heroArch = document.querySelector<HTMLElement>(".hero-arch");
+    let detachPointer: (() => void) | undefined;
+    if (hero && heroArch && window.matchMedia("(pointer: fine)").matches) {
+      const xTo = gsap.quickTo(heroArch, "x", {
+        duration: 0.9,
+        ease: "power3.out",
+      });
+      const yTo = gsap.quickTo(heroArch, "y", {
+        duration: 0.9,
+        ease: "power3.out",
+      });
+
+      const onMove = (event: PointerEvent) => {
+        const rect = hero.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width - 0.5;
+        const y = (event.clientY - rect.top) / rect.height - 0.5;
+        xTo(x * 16);
+        yTo(y * 12);
+      };
+
+      const onLeave = () => {
+        xTo(0);
+        yTo(0);
+      };
+
+      hero.addEventListener("pointermove", onMove, { passive: true });
+      hero.addEventListener("pointerleave", onLeave);
+
+      detachPointer = () => {
+        hero.removeEventListener("pointermove", onMove);
+        hero.removeEventListener("pointerleave", onLeave);
+        gsap.killTweensOf(heroArch);
+      };
     }
 
     // 4. Re-measure once webfonts / images settle. Masked words change
@@ -270,6 +416,7 @@ export const useAnimations = (revealed: boolean) => {
 
     return () => {
       disposed = true;
+      detachPointer?.();
       timers.forEach((id) => window.clearTimeout(id));
       window.removeEventListener("load", refresh);
 
@@ -301,19 +448,43 @@ export const useAnimations = (revealed: boolean) => {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    gsap.set(".hero-line-inner", { yPercent: 110, y: 0 });
+    gsap.set(".hero-letter-word", { yPercent: 120, y: 0 });
+    gsap.set(".hero-img-overlay", { yPercent: 0 });
+    gsap.set(".hero-person-img", { scale: 1.15 });
 
     const tl = gsap.timeline({ paused: true });
-    tl.to(".hero-line-inner", {
+    // 1. Portfolio signature word-by-word reveal
+    tl.to(".hero-letter-word", {
       yPercent: 0,
-      stagger: 0.1,
+      stagger: 0.08,
       duration: 1.5,
-      ease: "power4.out",
-    }).to(
-      ".hero-fade",
-      { opacity: 1, duration: 1, ease: "power2.out" },
-      0.35,
-    );
+      ease: "power4.inOut",
+      force3D: true,
+      delay: 0.2,
+    })
+      // 2. Profile animation: overlay slide down + image scale settle
+      .to(
+        ".hero-img-overlay",
+        {
+          yPercent: 100,
+          duration: 1.5,
+          ease: "power4.inOut",
+          force3D: true,
+        },
+        0.2,
+      )
+      .fromTo(
+        ".hero-person-img",
+        { scale: 1.15 },
+        { scale: 1, duration: 1.5, ease: "power4.inOut", force3D: true },
+        "<",
+      )
+      // 3. Subsidiary elements fade/slide in
+      .to(
+        ".hero-fade",
+        { opacity: 1, duration: 1.2, ease: "power4.out" },
+        0.4,
+      );
 
     heroTimeline.current = tl;
 

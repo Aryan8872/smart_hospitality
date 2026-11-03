@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Navbar } from "./components/ui/Navbar";
+import { ScrollProgress } from "./components/ui/ScrollProgress";
 import { Hero } from "./components/sections/Hero";
 import { About } from "./components/sections/About";
 import { Services } from "./components/sections/Services";
@@ -27,9 +28,10 @@ export default function SmartHospitalityLanding() {
     <>
       {/* .wrapper is the opaque page that slides up over the fixed footer
           (see the FOOTER REVEAL block in globals.css). */}
-      <div className="wrapper w-full bg-[#FBFAF7] text-[#12281A] antialiased [overflow-x:clip]">
+      <div className="wrapper w-full bg-ink text-ivory antialiased [overflow-x:clip]">
         <Preloader onReveal={() => setRevealed(true)} />
         <CustomCursor />
+        <ScrollProgress />
         <Navbar
           mobileMenuOpen={mobileMenuOpen}
           setMobileMenuOpen={setMobileMenuOpen}

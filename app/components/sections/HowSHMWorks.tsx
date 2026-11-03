@@ -2,30 +2,114 @@
 
 import React from "react";
 
-export const HowSHMWorks: React.FC = () => {
-  const steps = [
-    { num: 1, title: "Discover" },
-    { num: 2, title: "Assess" },
-    { num: 3, title: "Diagnose" },
-    { num: 4, title: "Improve" },
-    { num: 5, title: "Reassess", highlight: true },
-  ];
+const STEPS = [
+  {
+    num: "01",
+    title: "Discover",
+    desc: "Understand the property, its goals and the guest promise it wants to keep.",
+  },
+  {
+    num: "02",
+    title: "Assess",
+    desc: "Measure the real experience against the 1,000-point framework.",
+  },
+  {
+    num: "03",
+    title: "Diagnose",
+    desc: "Prioritise gaps by guest impact, operational risk and commercial value.",
+  },
+  {
+    num: "04",
+    title: "Improve",
+    desc: "Agree the plan, coach the team and fix the systems behind the symptoms.",
+  },
+  {
+    num: "05",
+    title: "Reassess",
+    desc: "Verify progress, document the gain and raise the baseline again.",
+  },
+];
 
+export const HowSHMWorks: React.FC = () => {
   return (
-    <section className="py-24 md:py-32 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16 md:mb-20 max-w-2xl mx-auto">
-          <span className="block text-[#B89856] text-xs uppercase tracking-widest font-medium mb-4">Process</span>
-          <h2 className="font-heading split-animate text-3xl md:text-5xl font-light tracking-tighter text-[#12281A] mb-6">How SHM Works</h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
-          {steps.map((item, idx) => (
-            <div key={idx} className={`p-10 border border-stone-100 hover:border-[#B89856]/30 hover:shadow-xl hover:-translate-y-1 transition-all duration-500 flex flex-col items-center text-center ${item.highlight ? "bg-stone-900 text-white" : "bg-white"}`}>
-              <div className={`w-14 h-14 flex items-center justify-center text-2xl font-heading font-bold mb-6 ${item.highlight ? "bg-[#B89856] text-white" : "bg-stone-50 text-stone-900"}`}>{item.num}</div>
-              <h3 className={`text-lg font-heading font-medium ${item.highlight ? "text-white" : "text-stone-900"}`}>{item.title}</h3>
+    <section
+      id="how-it-works"
+      className="relative overflow-hidden bg-ink py-24 md:py-32"
+    >
+      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+        <div className="absolute -right-40 top-0 h-[36rem] w-[36rem] rounded-full bg-royal/25 blur-[150px]" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/35 to-transparent" />
+      </div>
+
+      <div className="relative mx-auto max-w-[1320px] px-6 sm:px-10">
+        <div className="mb-16 md:mb-20">
+          <h2 className="what-i-do-title font-heading text-[clamp(2.5rem,6.5vw,5.5rem)] font-black uppercase text-ivory leading-none">
+            {"How SHM Works /".split("").map((char, i) => (
+              <span key={i} className="inline-block overflow-hidden align-bottom">
+                <span className="inline-block will-change-transform">
+                  {char === " " ? "\u00A0" : char}
+                </span>
+              </span>
+            ))}
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-12 mt-12 gap-8 items-start">
+            <p className="font-mono text-xs sm:text-sm uppercase tracking-[0.25em] text-gold col-span-12 md:col-span-4">
+              ( Structured Flow )
+            </p>
+            <div className="col-span-12 md:col-span-8 space-y-4">
+              <p className="font-display text-2xl sm:text-3xl font-light text-ivory leading-snug">
+                From Diagnostic Baseline to Measured Elevation.
+              </p>
+              <p className="text-sm sm:text-base text-ivory/65 font-light leading-relaxed max-w-[55ch]">
+                A five-phase cyclical framework ensuring zero disruption to live operations while systematically upgrading guest experience standards.
+              </p>
             </div>
-          ))}
+          </div>
         </div>
+
+        <div className="relative mt-16">
+          {/* Connecting rule — desktop */}
+          <div
+            className="absolute left-0 right-0 top-[3.15rem] hidden h-px bg-gradient-to-r from-gold/10 via-gold/40 to-gold/10 lg:block"
+            aria-hidden="true"
+          />
+
+          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
+            {STEPS.map((step, index) => (
+              <div
+                key={step.num}
+                className="reveal-up group relative"
+                data-reveal
+              >
+                <div className="flex items-center gap-4 lg:block">
+                  <span className="relative z-10 flex h-[6.3rem] w-[6.3rem] shrink-0 items-center justify-center rounded-full border border-gold/25 bg-ink transition-colors duration-500 group-hover:border-gold/60">
+                    <span className="font-display text-[2.4rem] font-light leading-none text-gold-light transition-colors duration-500 group-hover:text-ivory">
+                      {step.num}
+                    </span>
+                  </span>
+                  <span className="h-px flex-1 bg-gold/15 lg:hidden" />
+                </div>
+
+                <h3 className="mt-6 font-display text-2xl font-medium text-ivory">
+                  {step.title}
+                </h3>
+                <p className="mt-3 max-w-[15rem] text-xs font-light leading-relaxed text-ivory/45">
+                  {step.desc}
+                </p>
+
+                {index === STEPS.length - 1 && (
+                  <span className="mt-5 inline-flex items-center gap-2 border border-gold/40 px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.22em] text-gold-light">
+                    <span className="h-1 w-1 rounded-full bg-gold" />
+                    Continuous
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+     
       </div>
     </section>
   );

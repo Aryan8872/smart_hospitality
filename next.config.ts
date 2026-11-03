@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   },
   cacheComponents: true,
   partialPrefetching: true,
+  allowedDevOrigins: [
+    'hints-arc-bar-senate.trycloudflare.com',
+  ],
   turbopack: {
     rules: {
       "*.css": {

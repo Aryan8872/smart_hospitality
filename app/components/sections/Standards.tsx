@@ -230,12 +230,12 @@ export const Standards: React.FC = () => {
 
         {/* Master View Tabs */}
         <div className="flex justify-center mb-10">
-          <div className="inline-flex p-1.5 bg-white border border-black/10">
+          <div className="inline-flex p-1.5 bg-white border border-gold/30 shadow-md">
             <button
               onClick={() => setActiveTab("departments")}
-              className={`px-6 sm:px-8 py-2.5 text-xs sm:text-sm font-medium tracking-wide transition-all uppercase ${
+              className={`px-6 sm:px-8 py-2.5 text-xs sm:text-sm font-medium tracking-wide transition-all uppercase font-mono ${
                 activeTab === "departments"
-                  ? "bg-[#1E4D33] text-white"
+                  ? "bg-gradient-to-r from-[#d8b978] via-[#c9a25b] to-[#b3884a] text-[#071326] font-semibold shadow"
                   : "text-black/60 hover:text-black"
               }`}
             >
@@ -243,9 +243,9 @@ export const Standards: React.FC = () => {
             </button>
             <button
               onClick={() => setActiveTab("criteria")}
-              className={`px-6 sm:px-8 py-2.5 text-xs sm:text-sm font-medium tracking-wide transition-all uppercase ${
+              className={`px-6 sm:px-8 py-2.5 text-xs sm:text-sm font-medium tracking-wide transition-all uppercase font-mono ${
                 activeTab === "criteria"
-                  ? "bg-[#1E4D33] text-white"
+                  ? "bg-gradient-to-r from-[#d8b978] via-[#c9a25b] to-[#b3884a] text-[#071326] font-semibold shadow"
                   : "text-black/60 hover:text-black"
               }`}
             >
@@ -253,9 +253,9 @@ export const Standards: React.FC = () => {
             </button>
             <button
               onClick={() => setActiveTab("emotional")}
-              className={`px-6 sm:px-8 py-2.5 text-xs sm:text-sm font-medium tracking-wide transition-all uppercase ${
+              className={`px-6 sm:px-8 py-2.5 text-xs sm:text-sm font-medium tracking-wide transition-all uppercase font-mono ${
                 activeTab === "emotional"
-                  ? "bg-[#1E4D33] text-white"
+                  ? "bg-gradient-to-r from-[#d8b978] via-[#c9a25b] to-[#b3884a] text-[#071326] font-semibold shadow"
                   : "text-black/60 hover:text-black"
               }`}
             >
@@ -271,9 +271,9 @@ export const Standards: React.FC = () => {
             <div className="flex flex-wrap items-center justify-center gap-2 border-b border-black/10 pb-6">
               <button
                 onClick={() => setSelectedPillarId("all")}
-                className={`px-4 py-2 text-xs uppercase tracking-wider font-medium transition-all ${
+                className={`px-4 py-2 text-xs uppercase tracking-wider font-medium font-mono transition-all ${
                   selectedPillarId === "all"
-                    ? "bg-[#B89856] text-white"
+                    ? "bg-[#B89856] text-white shadow"
                     : "bg-white text-black/60 border border-black/10 hover:border-[#B89856]"
                 }`}
               >
@@ -283,9 +283,9 @@ export const Standards: React.FC = () => {
                 <button
                   key={p.id}
                   onClick={() => setSelectedPillarId(p.id)}
-                  className={`px-4 py-2 text-xs uppercase tracking-wider font-medium transition-all ${
+                  className={`px-4 py-2 text-xs uppercase tracking-wider font-medium font-mono transition-all ${
                     selectedPillarId === p.id
-                      ? "bg-[#B89856] text-white"
+                      ? "bg-[#B89856] text-white shadow"
                       : "bg-white text-black/60 border border-black/10 hover:border-[#B89856]"
                   }`}
                 >

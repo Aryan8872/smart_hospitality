@@ -67,41 +67,41 @@ export const Footer: React.FC = () => {
   return (
     <footer ref={footerRef} className="footer-sticky" aria-label="Site footer">
       <div ref={contentRef} className="relative z-10 w-full px-6 text-center">
-        <div className="text-[11px] uppercase tracking-[0.3em] mb-6 text-[#FBFAF7]/45">
+        <div className="text-[11px] uppercase tracking-[0.3em] mb-6 text-gold/80 font-mono">
           Hospitality Performance Advisory
         </div>
 
         <a
           href="mailto:info@shm.com.np"
-          className="font-heading inline-block text-[13vw] sm:text-[9vw] leading-[0.9] font-light tracking-tighter text-[#FBFAF7] hover:text-[#42A85D] transition-colors duration-500"
+          className="font-heading inline-block text-[13vw] sm:text-[9vw] leading-[0.9] font-light tracking-tighter text-ivory hover:text-gold-light transition-colors duration-500"
         >
           Let&apos;s Talk
         </a>
 
-        <nav className="mt-12 flex flex-wrap justify-center gap-x-8 gap-y-3 text-xs uppercase tracking-widest text-[#FBFAF7]/55">
+        <nav className="mt-12 flex flex-wrap justify-center gap-x-8 gap-y-3 text-xs uppercase tracking-widest text-ivory/60 font-mono">
           {FOOTER_LINKS.map((link) => (
             <a
               key={link.label}
               href={link.href}
-              className="hover:text-[#FBFAF7] transition-colors duration-300"
+              className="hover:text-gold-light transition-colors duration-300"
             >
               {link.label}
             </a>
           ))}
         </nav>
 
-        <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-x-3 gap-y-2 text-xs uppercase tracking-[0.2em] text-[#FBFAF7]/45">
+        <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-x-3 gap-y-2 text-xs uppercase tracking-[0.2em] text-ivory/50 font-mono">
           <a
             href="mailto:info@shm.com.np"
-            className="hover:text-[#FBFAF7] transition-colors duration-300"
+            className="hover:text-gold-light transition-colors duration-300"
           >
             info@shm.com.np
           </a>
-          <span className="hidden sm:inline text-[#FBFAF7]/20">/</span>
+          <span className="hidden sm:inline text-gold/30">/</span>
           <span>Kathmandu, Nepal</span>
         </div>
 
-        <div className="mx-auto mt-16 max-w-2xl text-[10px] leading-relaxed text-[#FBFAF7]/35">
+        <div className="mx-auto mt-16 max-w-2xl text-[10px] leading-relaxed text-ivory/35">
           © 2026 Smart Hospitality Management (SHM). Website prototype for
           review. Original SHM concept — not affiliated with LQA or Forbes
           Travel Guide. Privacy and legal pages to be prepared before launch.

@@ -1,21 +1,53 @@
 @import "tailwindcss";
 
+/* ============================================================
+   SMART HOSPITALITY — ROYAL NAVY & GOLD DESIGN SYSTEM
+   Palette is sampled from the SHMG crest: deep navy, royal
+   blue, antique gold and warm ivory.
+   ============================================================ */
 @theme {
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-heading: 'Sora', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-  --font-serif: Georgia, 'Times New Roman', serif;
+  --color-ink: #040a14;
+  --color-navy: #071326;
+  --color-navy-light: #0b1d36;
+  --color-royal: #14315a;
+  --color-royal-soft: #1d4275;
+  --color-gold: #c9a25b;
+  --color-gold-light: #e8d4a4;
+  --color-gold-deep: #96743a;
+  --color-ivory: #f3ecdd;
+  --color-paper: #faf6ec;
+  --color-paper-dim: #e9dfc9;
+  --color-sand: #cbbfa6;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-serif: Georgia, "Times New Roman", serif;
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: #FBFAF7;
-  color: #12281A;
+  background-color: var(--color-ink);
+  color: var(--color-ivory);
   margin: 0;
   overflow-x: hidden;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+::selection {
+  background-color: var(--color-gold);
+  color: var(--color-ink);
+}
+
 .font-heading {
+  font-family: var(--font-heading);
+}
+
+.font-display {
   font-family: var(--font-heading);
 }
 
@@ -23,24 +55,292 @@ body {
   font-family: var(--font-serif);
 }
 
+/* Keep anchor targets clear of the fixed navigation pill. */
+section[id],
+header[id] {
+  scroll-margin-top: 6.5rem;
+}
+
 .font-mono {
   font-family: var(--font-mono);
+}
+
+/* Fine paper grain — texture, not decoration. */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* ============================================================
+   TYPE + SECTION PRIMITIVES
+   ============================================================ */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 2.25rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+.eyebrow--plain::before {
+  display: none;
+}
+
+.eyebrow--dark {
+  color: var(--color-gold-deep);
+}
+
+.section-number {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  opacity: 0.9;
+}
+
+.display-xl {
+  font-family: var(--font-display);
+  font-weight: 300;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+}
+
+.gold-rule {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(201, 162, 91, 0.65),
+    transparent
+  );
+}
+
+.gold-text {
+  background: linear-gradient(100deg, #96743a 0%, #e8d4a4 42%, #c9a25b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn-gold {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  overflow: hidden;
+  background: linear-gradient(105deg, #d8b978 0%, #c9a25b 48%, #b3884a 100%);
+  color: #071326;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 1.05rem 1.9rem;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease;
+  box-shadow: 0 18px 45px -22px rgba(201, 162, 91, 0.9);
+}
+
+.btn-gold::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, #f0ddb0 0%, #d8b978 50%, #c9a25b 100%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.btn-gold > * {
+  position: relative;
+  z-index: 1;
+}
+
+.btn-gold:hover::before {
+  opacity: 1;
+}
+
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 24px 55px -20px rgba(201, 162, 91, 0.75);
+}
+
+.btn-gold:active {
+  transform: translateY(0) scale(0.99);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  border-bottom: 1px solid rgba(201, 162, 91, 0.4);
+  padding-bottom: 0.45rem;
+  color: #e9e1d2;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease,
+    gap 0.3s ease;
+}
+
+.btn-ghost:hover {
+  color: var(--color-gold-light);
+  border-color: var(--color-gold);
+  gap: 1rem;
+}
+
+.btn-ghost--dark {
+  color: #1b2a3d;
+  border-color: rgba(20, 49, 90, 0.25);
+}
+
+.btn-ghost--dark:hover {
+  color: var(--color-gold-deep);
+  border-color: var(--color-gold-deep);
+}
+
+.btn-outline-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  border: 1px solid rgba(201, 162, 91, 0.5);
+  color: var(--color-gold-light);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.95rem 1.6rem;
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.btn-outline-gold:hover {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-ink);
+}
+
+/* ============================================================
+   LUXURY SURFACES
+   ============================================================ */
+.card-royal {
+  position: relative;
+  background:
+    linear-gradient(160deg, rgba(20, 49, 90, 0.55), rgba(7, 19, 38, 0.25)),
+    rgba(7, 19, 38, 0.6);
+  border: 1px solid rgba(201, 162, 91, 0.16);
+  transition:
+    border-color 0.5s ease,
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.5s ease;
+}
+
+.card-royal:hover {
+  border-color: rgba(201, 162, 91, 0.5);
+  transform: translateY(-4px);
+}
+
+.card-paper {
+  background: rgba(250, 246, 236, 0.82);
+  border: 1px solid rgba(20, 49, 90, 0.12);
+  transition:
+    border-color 0.45s ease,
+    background-color 0.45s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card-paper:hover {
+  border-color: rgba(150, 116, 58, 0.45);
+  background: #fffdf7;
+  transform: translateY(-3px);
+}
+
+.arch-mask {
+  border-radius: 999px 999px 0 0;
+  overflow: hidden;
+}
+
+.hairline-top {
+  border-top: 1px solid rgba(201, 162, 91, 0.18);
+}
+
+.hairline-bottom {
+  border-bottom: 1px solid rgba(201, 162, 91, 0.18);
+}
+
+.hairline-top-dark {
+  border-top: 1px solid rgba(20, 49, 90, 0.12);
+}
+
+.hairline-bottom-dark {
+  border-bottom: 1px solid rgba(20, 49, 90, 0.12);
+}
+
+/* Decorative corner rules used on the hero + feature panels */
+.corner-frame {
+  position: absolute;
+  inset: 1.25rem;
+  pointer-events: none;
+  border: 1px solid rgba(201, 162, 91, 0.14);
+}
+
+.corner-frame::before,
+.corner-frame::after {
+  content: "";
+  position: absolute;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-color: rgba(201, 162, 91, 0.55);
+  border-style: solid;
+}
+
+.corner-frame::before {
+  top: -1px;
+  left: -1px;
+  border-width: 1px 0 0 1px;
+}
+
+.corner-frame::after {
+  right: -1px;
+  bottom: -1px;
+  border-width: 0 1px 1px 0;
 }
 
 /* ============================================================
    TEXT REVEAL
    Word-by-word "rise from behind a mask" reveal.
-   Mirrors the AURUM "Beyond the Skyline" pattern:
-     .word-wrap   → inline-block clip mask
-     .word-inner  → the moving word (hidden state set by GSAP)
-   .split-words uses display:contents so the wrapper never
-   disturbs flex / grid / inline layout of the host element.
    ============================================================ */
 .word-wrap {
   display: inline-block;
   overflow: hidden;
   vertical-align: top;
-  /* room for descenders (g, y, p) inside the clip mask */
   padding-bottom: 0.12em;
 }
 
@@ -49,77 +349,74 @@ body {
 }
 
 .word-inner > * {
-  /* atomic block children (e.g. meta columns) keep their own layout */
   display: block;
 }
 
+/* display:contents keeps layout untouched between split words */
 .split-words {
   display: contents;
 }
 
-/* Hero headline lines: hidden from first paint, GSAP owns the transform. */
+/* Hero headline lines: only hidden when JS is available. */
 .hero-line-inner {
   display: block;
-  transform: translateY(110%);
   will-change: transform;
 }
 
-.selection\:bg-\[\#42A85D\]::-moz-selection {
-  background-color: #42A85D;
-  color: black;
+html.js-enabled .hero-line-inner {
+  transform: translateY(110%);
 }
 
-.selection\:text-black::-moz-selection {
-  color: black;
+/* Hero supporting copy is visible without JS. */
+.hero-fade {
+  opacity: 1;
 }
 
-.cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #FAF9F6;
-  pointer-events: none;
-  z-index: 9999;
-  mix-blend-mode: difference;
-  transform: translate(-50%, -50%);
-  transition: width 0.3s, height 0.3s, background 0.3s;
+html.js-enabled .hero-fade {
+  opacity: 0;
 }
 
-.cursor.active {
-  width: 64px;
-  height: 64px;
-  background: rgba(250, 249, 246, 0.1);
-  backdrop-filter: blur(2px);
-  border: 1px solid rgba(250, 249, 246, 0.5);
+/* Generic reveal targets — hidden only when JS is available. */
+html.js-enabled .reveal-up {
+  opacity: 0;
+  transform: translateY(38px);
 }
 
+/* ============================================================
+   PRELOADER — hidden unless JS boots (no-JS users see the page)
+   ============================================================ */
 .preloader {
+  display: none;
   position: fixed;
   inset: 0;
   z-index: 10000;
-  background: #1E4D33;
-  display: flex;
+  background:
+    radial-gradient(
+      circle at 70% 20%,
+      rgba(29, 66, 117, 0.5),
+      transparent 55%
+    ),
+    #040a14;
   justify-content: center;
   align-items: center;
-  color: #FBFAF7;
+  color: var(--color-ivory);
   flex-direction: column;
 }
 
+html.js-enabled .preloader {
+  display: flex;
+}
+
 .preloader-text {
-  font-size: clamp(1.5rem, 3.2vw, 2.25rem);
-  line-height: 1.2;
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 4vw, 3rem);
+  line-height: 1.1;
   overflow: hidden;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   font-weight: 300;
 }
 
-/* The wordmark starts behind its own clip mask. Preloader.tsx lifts it
-   with `fromTo(yPercent: 100 → 0)`; keeping the hidden state in CSS
-   means no flash of text before the timeline has started. */
 .preloader-text span {
   display: inline-block;
   transform: translateY(100%);
@@ -127,64 +424,124 @@ body {
 }
 
 .preloader-progress {
-  width: 160px;
+  width: 190px;
   height: 1px;
-  background: rgba(251, 250, 247, 0.2);
-  margin-top: 24px;
+  background: rgba(201, 162, 91, 0.2);
+  margin-top: 26px;
   overflow: hidden;
 }
 
 .preloader-bar {
   width: 0%;
   height: 100%;
-  background: #FBFAF7;
+  background: linear-gradient(90deg, #96743a, #e8d4a4);
 }
 
-/* --- CARD STACK SECTION --- */
+/* ============================================================
+   CURSOR — thin gold ring, fine pointers only
+   ============================================================ */
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(201, 162, 91, 0.75);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.3s ease,
+    height 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.cursor::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  transform: translate(-50%, -50%);
+}
+
+.cursor.active {
+  width: 56px;
+  height: 56px;
+  background: rgba(201, 162, 91, 0.12);
+  border-color: rgba(232, 212, 164, 0.9);
+}
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .cursor {
+    display: none !important;
+  }
+}
+
+/* ============================================================
+   STICKY CARD STACK — Why Choose SHM (dark re-skin)
+   ============================================================ */
 .stack-section {
-  padding: 10vh 0;
-  background: #0c0a0c;
-  color: #E3E1DC;
+  padding: 14vh 0 10vh;
+  background: #040a14;
+  color: #e9e1d2;
   position: relative;
+  z-index: 20;
+  border-top-left-radius: 2.5rem;
+  border-top-right-radius: 2.5rem;
+  box-shadow: 0 -40px 90px -10px rgba(4, 10, 20, 0.95);
 }
 
 .stack-container {
   width: 100%;
-  max-width: 1400px;
+  max-width: 1320px;
   margin: 0 auto;
   position: relative;
-  padding-bottom: 10vh;
+  padding: 0 1.5rem 10vh;
 }
 
 .card-item {
   position: sticky;
-  top: 10vh;
-  height: 80vh;
+  top: 11vh;
+  height: 78vh;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 5vh;
+  margin-bottom: 6vh;
 }
 
 .card-inner {
-  width: 90%;
+  width: 100%;
   height: 100%;
-  background: #1a1a1a;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #071326;
+  border: 1px solid rgba(201, 162, 91, 0.24);
   position: relative;
   overflow: hidden;
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  grid-template-columns: 1fr 1.15fr;
+  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.85);
+  transform-origin: center top;
+  will-change: transform, opacity;
 }
 
 .card-content {
-  padding: 4rem;
+  padding: 3.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: #1a1a1a;
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(29, 66, 117, 0.35),
+      transparent 55%
+    ),
+    #071326;
   z-index: 2;
 }
 
@@ -193,83 +550,47 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #2a2a2a;
+  background: #0b1d36;
+}
+
+.card-img-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(7, 19, 38, 0.55),
+    transparent 45%
+  );
 }
 
 @media (max-width: 768px) {
-  .card-inner { grid-template-columns: 1fr; }
-  .card-item { top: 5vh; height: 85vh; }
-  .card-img-wrap { height: 50%; order: -1; }
-  .card-content { padding: 2rem; }
-}
-
-/* ============================================================
-   CARD STACK · LIGHT VARIANT
-   Keeps every piece of the sticky-stack mechanics above (position,
-   heights, grid, the GSAP scale/opacity scrub) and only re-themes
-   colour, so the section sits in the cream / ink / gold rhythm of
-   the blocks around it instead of cutting the page with near-black.
-   ============================================================ */
-.stack-section--light {
-  background: #FBFAF7;
-  color: #12281A;
-  border-top: 1px solid rgba(18, 40, 26, 0.08);
-  border-bottom: 1px solid rgba(18, 40, 26, 0.08);
-}
-
-.stack-section--light .card-inner {
-  background: #ffffff;
-  border: 1px solid rgba(18, 40, 26, 0.1);
-  box-shadow: 0 25px 50px -12px rgba(18, 40, 26, 0.16);
-}
-
-.stack-section--light .card-content {
-  background: #ffffff;
-}
-
-.stack-section--light .card-img-wrap {
-  background: #f2f5f1;
-}
-
-/* hairline between the copy column and the icon panel (desktop only —
-   on mobile the panel stacks above the copy) */
-@media (min-width: 769px) {
-  .stack-section--light .card-content {
-    border-right: 1px solid rgba(18, 40, 26, 0.08);
+  .card-inner {
+    grid-template-columns: 1fr;
   }
-}
-
-/* On mobile the media panel stacks on top of the copy and, with the emoji
-   gone, would collapse to a thin strip — give it a real floor. `card-inner`
-   has a fixed height, so this trades space with the copy column and does not
-   change page height. */
-@media (max-width: 768px) {
-  .stack-section--light .card-img-wrap {
-    height: auto;
-    min-height: 190px;
+  .card-item {
+    top: 7vh;
+    height: 84vh;
+  }
+  .card-img-wrap {
+    height: 48%;
+    order: -1;
+  }
+  .card-content {
+    padding: 2rem;
   }
 }
 
 /* ============================================================
-   FOOTER REVEAL  (AURUM pattern)
-   .wrapper is the opaque page and reserves one screen of scroll
-   with margin-bottom. The footer is fixed underneath at z-index 1,
-   so that final screen of scrolling slides the page up and uncovers
-   the footer instead of the footer simply being the last block.
-   `.footer-sticky` height and `.wrapper` margin must stay in the
-   same unit, otherwise a sliver of body colour (or clipped footer)
-   shows up at the end of the scroll.
+   FOOTER REVEAL
    ============================================================ */
 .wrapper {
   position: relative;
   z-index: 10;
-  background-color: #FBFAF7;
+  background-color: #040a14;
   margin-bottom: 100vh;
   margin-bottom: 100svh;
-  box-shadow: 0 40px 90px rgba(18, 40, 26, 0.35);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.55);
 }
 
 .footer-sticky {
@@ -280,8 +601,14 @@ body {
   height: 100vh;
   height: 100svh;
   z-index: 1;
-  background: #1E4D33;
-  color: #FBFAF7;
+  background:
+    radial-gradient(
+      ellipse at 70% 20%,
+      rgba(29, 66, 117, 0.45),
+      transparent 60%
+    ),
+    #040a14;
+  color: var(--color-ivory);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -291,8 +618,6 @@ body {
 
 /* ============================================================
    INFINITE BRAND LOGO MARQUEE
-   Smooth, hardware-accelerated, seamless loop.
-   Does not stop on hover. Never flinches or restarts.
    ============================================================ */
 @keyframes infinite-marquee {
   0% {
@@ -309,19 +634,129 @@ body {
   flex-wrap: nowrap !important;
   width: max-content !important;
   align-items: center !important;
-  animation: infinite-marquee 25s linear infinite !important;
+  animation: infinite-marquee 50s linear infinite !important;
   will-change: transform;
+}
+
+/* Infinite brand marquee runs continuously without pausing on hover */
+.brand-marquee-track:hover,
+.brand-marquee-track:focus-within {
+  animation-play-state: running !important;
+}
+
+@keyframes scrollcue {
+  0% {
+    transform: translateX(-120%);
+  }
+  60%,
+  100% {
+    transform: translateX(320%);
+  }
+}
+
+/* Ivory plaques keep the colour logos honest on the navy band. */
+.brand-plaque {
+  background: linear-gradient(150deg, #fbf7ee, #eee4d1);
+  box-shadow:
+    inset 0 0 0 1px rgba(150, 116, 58, 0.18),
+    0 18px 40px -30px rgba(0, 0, 0, 0.9);
+}
+
+.brand-plaque img {
+  mix-blend-mode: multiply;
+}
+
+/* ============================================================
+   SCORING BAR
+   ============================================================ */
+.score-bar {
+  height: 2px;
+  background: rgba(201, 162, 91, 0.16);
+  overflow: hidden;
+}
+
+.score-bar > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #96743a, #e8d4a4);
+  transform-origin: left;
+}
+
+/* ============================================================
+   WHO WE SERVE — seed tile that opens into the sector stage.
+   The panel is full-bleed without JS. Motion mode shrinks it
+   onto the seed, then scroll grows the clip window.
+   ============================================================ */
+.serve-seed {
+  aspect-ratio: 18 / 13;
+  width: clamp(5.75rem, 16vw, 13.5rem);
+  flex: none;
+  background: #071326;
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 91, 0.55);
+}
+
+.serve-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  background: #071326;
+  color: #f3ecdd;
+}
+
+.serve-world {
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js-enabled .serve-panel:not(.is-ready) {
+    visibility: hidden;
+  }
+}
+
+.serve-panel.is-live {
+  inset: auto;
+  top: 0;
+  left: 0;
+  will-change: transform, width, height;
+}
+
+.serve-panel.is-live .serve-world {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+
+.serve-segment {
+  background: #0b1d36;
+  min-height: 0;
+  transition: background-color 0.45s ease;
+}
+
+.serve-segment:hover,
+.serve-segment:focus-within {
+  background: #14315a;
 }
 
 /* ============================================================
    REDUCED MOTION
-   Everything renders in its final state. No masked text, no
-   scroll-scrubbed transforms, no curtain.
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   .word-inner,
-  .hero-line-inner {
+  .hero-line-inner,
+  .reveal-up {
     transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .serve-panel,
+  .serve-world {
+    transform: none !important;
+    visibility: visible !important;
+    width: auto !important;
+    height: auto !important;
   }
 
   .hero-fade {
@@ -330,5 +765,9 @@ body {
 
   .preloader {
     display: none;
+  }
+
+  .brand-marquee-track {
+    animation: none !important;
   }
 }

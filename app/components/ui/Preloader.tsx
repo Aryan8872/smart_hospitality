@@ -59,13 +59,6 @@ export const Preloader: React.FC<PreloaderProps> = ({ onReveal }) => {
       const tl = gsap.timeline({ onComplete: finish });
 
       // 1. Wordmark rises out of its clip mask.
-      //
-      //    `y: 0` is load-bearing. The element's hidden state lives in CSS
-      //    as `transform: translateY(100%)`, which GSAP parses into a
-      //    px-based `y` (43px here). A yPercent-only tween would leave that
-      //    px offset in place and the wordmark would stop dead at the mask
-      //    edge — invisible for the whole preloader. Same idiom as the hero
-      //    line reveal in useAnimations.ts.
       tl.fromTo(
         textInner,
         { yPercent: 100, y: 0 },
@@ -111,11 +104,37 @@ export const Preloader: React.FC<PreloaderProps> = ({ onReveal }) => {
 
   return (
     <div ref={containerRef} className="preloader" aria-hidden="true">
-      <div ref={textRef} className="preloader-text">
-        <span ref={textInnerRef}>Smart Hospitality</span>
-      </div>
-      <div className="preloader-progress">
-        <div ref={barRef} className="preloader-bar" />
+      <div
+        className="pointer-events-none absolute inset-5 border border-gold/15 sm:inset-8"
+        aria-hidden="true"
+      />
+
+      <div className="relative flex flex-col items-center px-6 text-center">
+        <span className="mb-7 flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-gold/35 bg-paper p-1.5">
+          <img
+            src="/brand_logo/shmg.png"
+            alt=""
+            className="h-full w-full object-contain mix-blend-multiply"
+          />
+        </span>
+
+        <div ref={textRef} className="preloader-text text-gold-light">
+          <span ref={textInnerRef} className="whitespace-nowrap">
+            Smart Hospitality
+          </span>
+        </div>
+
+        <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.42em] text-ivory/45">
+          Management Group
+        </p>
+
+        <div className="preloader-progress">
+          <div ref={barRef} className="preloader-bar" />
+        </div>
+
+        <p className="mt-5 font-mono text-[8px] uppercase tracking-[0.3em] text-ivory/25">
+          Independent hospitality advisory · Nepal
+        </p>
       </div>
     </div>
   );

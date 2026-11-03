@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FBF6EC"/>
+      <stop offset="0.55" stop-color="#F7F1E4"/>
+      <stop offset="1" stop-color="#F2E9D8"/>
+    </linearGradient>
+    <linearGradient id="arc1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F8F0DF"/>
+      <stop offset="1" stop-color="#EADFC8"/>
+    </linearGradient>
+    <linearGradient id="arc2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F4EAD6"/>
+      <stop offset="1" stop-color="#E3D5B9"/>
+    </linearGradient>
+    <linearGradient id="wave1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBF6EC"/>
+      <stop offset="1" stop-color="#F3E9D6"/>
+    </linearGradient>
+    <linearGradient id="wave2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F7EEDC"/>
+      <stop offset="1" stop-color="#EADCC1"/>
+    </linearGradient>
+    <linearGradient id="wave3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FAF3E5"/>
+      <stop offset="1" stop-color="#EEE2CB"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.82" cy="0.18" r="0.75">
+      <stop offset="0" stop-color="#FFFBF3" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#FFFBF3" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#base)"/>
+  <rect width="1600" height="900" fill="url(#glow)"/>
+
+  <!-- Curved layered sheets, upper right -->
+  <g filter="url(#soft)" opacity="0.55">
+    <path d="M1600 -120 C1240 60 1110 330 1060 620 C1030 800 1040 900 1040 900 L1600 900 Z" fill="url(#arc1)"/>
+    <path d="M1600 120 C1330 250 1220 470 1180 700 C1160 810 1160 900 1160 900 L1600 900 Z" fill="url(#arc2)" opacity="0.75"/>
+    <path d="M1600 330 C1420 430 1340 610 1320 780 C1310 850 1310 900 1310 900 L1600 900 Z" fill="#F6ECD9" opacity="0.85"/>
+  </g>
+
+  <!-- Fine arc highlights -->
+  <path d="M1600 250 C1410 380 1320 580 1300 900" fill="none" stroke="#E4D6BA" stroke-opacity="0.55" stroke-width="2"/>
+  <path d="M1600 400 C1470 500 1400 660 1385 900" fill="none" stroke="#E9DCC3" stroke-opacity="0.5" stroke-width="2"/>
+
+  <!-- Sweeping bottom waves -->
+  <path d="M0 690 C260 660 470 730 720 790 C980 852 1230 900 1600 830 L1600 900 L0 900 Z" fill="url(#wave1)" opacity="0.95"/>
+  <path d="M0 770 C240 730 400 700 640 745 C930 800 1200 890 1600 880 L1600 900 L0 900 Z" fill="url(#wave2)" opacity="0.9"/>
+  <path d="M0 838 C300 790 520 800 780 840 C1050 882 1300 900 1600 900 L0 900 Z" fill="url(#wave3)" opacity="0.95"/>
+
+  <!-- Curl sheet rising from bottom right -->
+  <path d="M1180 900 C1260 830 1380 790 1600 760 L1600 900 Z" fill="#F8F1E1" opacity="0.9"/>
+  <path d="M1180 900 C1260 830 1380 790 1600 760" fill="none" stroke="#E6D8BE" stroke-opacity="0.5" stroke-width="2"/>
+</svg>

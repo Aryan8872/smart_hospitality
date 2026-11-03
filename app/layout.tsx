@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "SHM | Smart Hospitality Management Group",
   description:
-    "Independent hospitality assessments, practical training, operational excellence, and measurable improvement plans for hotels, resorts, and restaurants.",
+    "Independent hospitality assessments, practical training, operational excellence, and measurable improvement plans for hotels, resorts, and restaurants in Nepal.",
   icons: {
     icon: [
       { url: "/brand_logo/shmg.png", type: "image/png" },
@@ -15,14 +15,17 @@ export const metadata: Metadata = {
   },
 };
 
+const JS_FLAG = `document.documentElement.classList.add('js-enabled');`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth antialiased">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: JS_FLAG }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -34,7 +37,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-[#FBFAF7] text-[#12281A] font-sans selection:bg-[#42A85D] selection:text-black min-h-screen">
+      <body className="grain bg-ink text-ivory font-sans antialiased min-h-screen">
         {children}
       </body>
     </html>

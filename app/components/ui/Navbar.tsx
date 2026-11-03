@@ -15,16 +15,14 @@ export const Navbar: React.FC<NavbarProps> = ({
     <nav className="fixed left-1/2 -translate-x-1/2 top-4 sm:top-7 z-50">
       <div className="flex items-center gap-1 bg-white/95 backdrop-blur-md rounded-full pl-3 pr-1.5 py-1.5 border border-black/10 shadow-xl shadow-black/10">
         <a href="#" className="flex items-center gap-2.5 pr-3 sm:pr-4">
-          <div className="h-8 w-8 sm:h-9 sm:w-9 relative shrink-0 flex items-center justify-center">
+          <div className="h-10 w-10 sm:h-11 sm:w-11 relative shrink-0 flex items-center justify-center">
             <img
               src="/brand_logo/shmg.png"
               alt="SHMG Logo"
               className="max-h-full max-w-full object-contain"
             />
           </div>
-          <span className="font-heading font-medium text-xs sm:text-sm tracking-tight text-[#12281A] whitespace-nowrap">
-            SHMG
-          </span>
+     
         </a>
         <div className="hidden lg:flex items-center gap-1 text-sm text-black/60">
           <a href="#about" className="whitespace-nowrap px-3 py-1.5 rounded-full hover:text-black hover:bg-black/5 transition-colors duration-300">
@@ -43,8 +41,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             Academy
           </a>
         </div>
-        <a href="#contact" className="shrink-0 ml-1 sm:ml-2 bg-[#1E4D33] hover:bg-[#2A6647] active:scale-95 text-white text-sm font-medium px-4 sm:px-5 py-2 rounded-full transition-all duration-300 whitespace-nowrap shadow-lg shadow-[#1E4D33]/30">
-          Contact
+        <a href="#contact" className="shrink-0 ml-1 sm:ml-2 btn-gold !py-2 !px-5 !text-xs !rounded-full shadow-lg">
+          <span>Contact</span>
         </a>
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
