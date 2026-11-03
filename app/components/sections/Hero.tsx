@@ -32,7 +32,10 @@ export const Hero: React.FC = () => {
         className="sticky top-0 flex min-h-screen flex-col justify-between overflow-hidden will-change-transform"
       >
         {/* Background ambient light shapes */}
-        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+        <div
+          className="pointer-events-none absolute inset-0"
+          aria-hidden="true"
+        >
           <div className="absolute -right-40 -top-40 h-[46rem] w-[46rem] rounded-full bg-royal/30 blur-[150px]" />
           <div className="absolute -left-52 bottom-0 h-[34rem] w-[34rem] rounded-full bg-gold/[0.07] blur-[120px]" />
           <div className="absolute inset-0 hidden lg:block">
@@ -70,31 +73,45 @@ export const Hero: React.FC = () => {
                 </p>
 
                 <h1 className="hero-heading-split display-xl text-[clamp(2.1rem,4.2vw,3.8rem)] leading-[1.05] tracking-tight text-ivory">
-                  {"Elevated standards. Exceptional hospitality.".split(" ").map((word, wordIdx) => (
-                    <span key={wordIdx} className="inline-block overflow-hidden mr-[0.26em] align-top">
-                      <span className={`hero-letter-word inline-block translate-y-[120%] will-change-transform ${
-                        word.toLowerCase().includes("standards") ? "italic text-gold-light" : ""
-                      }`}>
-                        {word}
+                  {"Elevated standards. Exceptional hospitality."
+                    .split(" ")
+                    .map((word, wordIdx) => (
+                      <span
+                        key={wordIdx}
+                        className="inline-block overflow-hidden mr-[0.26em] align-top"
+                      >
+                        <span
+                          className={`hero-letter-word inline-block translate-y-[120%] will-change-transform ${
+                            word.toLowerCase().includes("standards")
+                              ? "italic text-gold-light"
+                              : ""
+                          }`}
+                        >
+                          {word}
+                        </span>
                       </span>
-                    </span>
-                  ))}
+                    ))}
                 </h1>
 
                 <p className="hero-fade mt-6 max-w-lg text-sm font-light leading-relaxed text-ivory/60 sm:text-[0.95rem]">
-                  Independent quality assessments, practical training and
-                  operational improvement for restaurants, cafés, hotels and
-                  resorts — where global standards meet authentic local warmth.
+                  Independent Hospitality Assessments, Operational Management,
+                  Professional Training & Performance Improvement.
                 </p>
 
                 <div className="hero-fade mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
-                  <a href="#contact" className="btn-gold group !py-3 !px-7 !text-xs !rounded-full shadow-lg">
+                  <a
+                    href="#contact"
+                    className="btn-gold group !py-3 !px-7 !text-xs !rounded-full shadow-lg"
+                  >
                     <span>Request an Assessment</span>
                     <span className="transition-transform duration-300 group-hover:translate-x-1">
                       →
                     </span>
                   </a>
-                  <a href="#services" className="btn-ghost group !py-3 !px-6 !text-xs">
+                  <a
+                    href="#services"
+                    className="btn-ghost group !py-3 !px-6 !text-xs"
+                  >
                     Explore Services
                     <span className="transition-transform duration-300 group-hover:translate-x-1">
                       ↘

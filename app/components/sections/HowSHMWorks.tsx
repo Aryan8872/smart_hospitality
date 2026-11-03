@@ -94,16 +94,11 @@ export const HowSHMWorks: React.FC = () => {
                 <h3 className="mt-6 font-display text-2xl font-medium text-ivory">
                   {step.title}
                 </h3>
-                <p className="mt-3 max-w-[15rem] text-xs font-light leading-relaxed text-ivory/45">
+                {/* <p className="mt-3 max-w-[15rem] text-xs font-light leading-relaxed text-ivory/45">
                   {step.desc}
-                </p>
+                </p> */}
 
-                {index === STEPS.length - 1 && (
-                  <span className="mt-5 inline-flex items-center gap-2 border border-gold/40 px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.22em] text-gold-light">
-                    <span className="h-1 w-1 rounded-full bg-gold" />
-                    Continuous
-                  </span>
-                )}
+              
               </div>
             ))}
           </div>
