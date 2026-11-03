@@ -122,7 +122,7 @@ export const Hero: React.FC = () => {
 
               {/* Arched image + seal */}
               <div className="relative hidden justify-center lg:flex">
-                <div className="relative w-full max-w-[320px] xl:max-w-[360px]">
+                <div className="relative w-full max-w-[320px] xl:max-w-[300px]">
                   <div
                     className="absolute -inset-3 arch-mask border border-gold/25"
                     aria-hidden="true"
