@@ -110,7 +110,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onReveal }) => {
       />
 
       <div className="relative flex flex-col items-center px-6 text-center">
-        <span className="mb-7 flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-gold/35 bg-paper p-1.5">
+        <span className="mb-7 flex h-48 w-48 items-center justify-center overflow-hidden rounded-full border border-gold/35 bg-paper p-1.5">
           <img
             src="/brand_logo/shmg.png"
             alt=""

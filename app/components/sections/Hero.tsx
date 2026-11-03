@@ -69,7 +69,7 @@ export const Hero: React.FC = () => {
               {/* Copy column */}
               <div className="max-w-2xl">
                 <p className="eyebrow hero-fade mb-4 text-[10px] uppercase tracking-[0.25em] text-[#B89856]">
-                  Hospitality Performance Advisory · Nepal
+                  Hospitality Standards . PERFORMANCE  · EXCELLENCE
                 </p>
 
                 <h1 className="hero-heading-split display-xl text-[clamp(2.1rem,4.2vw,3.8rem)] leading-[1.05] tracking-tight text-ivory">
@@ -130,7 +130,7 @@ export const Hero: React.FC = () => {
                   <div className="hero-arch relative aspect-[3/3.8] w-full overflow-hidden arch-mask border border-gold/40">
                     <div className="hero-img-overlay absolute inset-0 z-10 bg-paper" />
                     <Image
-                      src="/images/why-guest-satisfaction.webp"
+                      src="/images/hero2.png"
                       alt="A guest enjoying a meal in warm, considered restaurant lighting"
                       fill
                       priority
@@ -185,7 +185,7 @@ export const Hero: React.FC = () => {
         </div>
 
         {/* ── Marquee strip: exact placement, size, and styling matching the snippet ── */}
-        <div className="relative w-full z-20 py-8 sm:py-12 border-t border-gold/20 bg-[#FBFAF7]/95 backdrop-blur-sm overflow-hidden select-none">
+        <div className="relative w-full z-20 py-8 sm:py-8 border-t border-gold/20 bg-[#FBFAF7]/95 backdrop-blur-sm overflow-hidden select-none">
           <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent_0%,black_6%,black_94%,transparent_100%)]">
             <div
               className="brand-marquee-track flex flex-nowrap items-center"
@@ -198,7 +198,7 @@ export const Hero: React.FC = () => {
                   {BRANDS.map((brand) => (
                     <div
                       key={`${set}-${brand.src}`}
-                      className="h-20 sm:h-24 w-60 sm:w-72 flex items-center justify-center shrink-0 px-8 sm:px-10"
+                      className="h-24 sm:h-[7.2rem] w-72 sm:w-[21.6rem] flex items-center justify-center shrink-0 px-8 sm:px-10"
                     >
                       <img
                         src={brand.src}
