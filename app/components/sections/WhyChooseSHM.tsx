@@ -11,31 +11,31 @@ const BENEFITS = [
   {
     title: "Understand Your Business",
     desc: "Discover what guests actually experience at every touchpoint.",
-    img: "/images/understandbusi.png",
+    img: "/images/understand.png",
     alt: "Overhead view of guests sharing plates across a busy restaurant table",
   },
   {
     title: "Improve Guest Satisfaction",
     desc: "Identify service gaps and build stronger hospitality habits.",
-    img: "/images/guestsatis.png",
+    img: "/images/guestsatis2.png",
     alt: "Guest enjoying a meal in warm restaurant lighting",
   },
   {
     title: "Build Team Confidence",
     desc: "Turn observations into practical coaching and SOPs.",
-    img: "/images/buildteamconfi.png",
+    img: "/images/teamconfi.png",
     alt: "Two colleagues reviewing service notes together at a laptop",
   },
   {
     title: "Improve Operations",
     desc: "Reduce inconsistencies in service, kitchen and inventory routines.",
-    img: "/images/improveoper.png",
+    img: "/images/improveop.png",
     alt: "Café counter where staff take a card payment at the till",
   },
   {
     title: "Strengthen Commerciality",
     desc: "Review menu margins, sales opportunities and avoidable costs.",
-    img: "/images/service-operations-audit.webp",
+    img: "/images/commercial.png",
     alt: "Assessor writing notes on a printed hospitality review",
   },
   {
