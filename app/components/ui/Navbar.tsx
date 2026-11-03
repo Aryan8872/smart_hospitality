@@ -13,20 +13,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   return (
     <nav className="fixed left-1/2 -translate-x-1/2 top-4 sm:top-7 z-50">
-      <div className="flex items-center gap-1 bg-white/90 backdrop-blur-md rounded-full pl-4 pr-1.5 py-1.5 border border-black/10 shadow-xl shadow-black/10">
+      <div className="flex items-center gap-1 bg-white/95 backdrop-blur-md rounded-full pl-3 pr-1.5 py-1.5 border border-black/10 shadow-xl shadow-black/10">
         <a href="#" className="flex items-center gap-2.5 pr-3 sm:pr-4">
-          <span className="grid grid-cols-3 gap-[2.5px]">
-            <span className="w-1 h-1 rounded-full bg-[#42A85D]"></span>
-            <span className="w-1 h-1 rounded-full bg-black/70"></span>
-            <span className="w-1 h-1 rounded-full bg-black/30"></span>
-            <span className="w-1 h-1 rounded-full bg-black/70"></span>
-            <span className="w-1 h-1 rounded-full bg-black/30"></span>
-            <span className="w-1 h-1 rounded-full bg-black/70"></span>
-            <span className="w-1 h-1 rounded-full bg-black/30"></span>
-            <span className="w-1 h-1 rounded-full bg-black/70"></span>
-            <span className="w-1 h-1 rounded-full bg-[#42A85D]"></span>
-          </span>
-          <span className="font-heading font-semibold text-sm tracking-tight whitespace-nowrap">
+          <div className="h-8 w-8 sm:h-9 sm:w-9 relative shrink-0 flex items-center justify-center">
+            <img
+              src="/brand_logo/shmg.png"
+              alt="SHMG Logo"
+              className="max-h-full max-w-full object-contain"
+            />
+          </div>
+          <span className="font-heading font-medium text-xs sm:text-sm tracking-tight text-[#12281A] whitespace-nowrap">
             SHMG
           </span>
         </a>

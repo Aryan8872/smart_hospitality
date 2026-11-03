@@ -2,9 +2,17 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SHMG | Smart Hospitality Management",
+  title: "SHM | Smart Hospitality Management Group",
   description:
-    "Independent hospitality assessments, practical training, operational excellence, and measurable improvement plans for Nepal's restaurants, cafés, and bars.",
+    "Independent hospitality assessments, practical training, operational excellence, and measurable improvement plans for hotels, resorts, and restaurants.",
+  icons: {
+    icon: [
+      { url: "/brand_logo/shmg.png", type: "image/png" },
+      { url: "/favicon.png", type: "image/png" },
+    ],
+    shortcut: "/brand_logo/shmg.png",
+    apple: "/brand_logo/shmg.png",
+  },
 };
 
 export default function RootLayout({

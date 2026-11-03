@@ -38,11 +38,11 @@ export const Hero: React.FC = () => {
 
       {/* Content */}
       <div className="relative z-10 flex-1 flex items-end">
-        <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 pb-[24vw] sm:pb-[20vw] lg:pb-[17vw] pt-40">
+        <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 pb-16 pt-40">
           <div className="max-w-2xl">
             {/* Subtitle — fades in via .hero-fade */}
             <p className="text-xs uppercase tracking-[0.25em] text-[#1E4D33] font-medium mb-8 opacity-0 hero-fade">
-              Restaurant • Café • Bar Excellence
+              HOSPITALITY STANDARDS • PERFORMANCE • Excellence
             </p>
 
             {/* ── HERO TITLE ──
@@ -54,7 +54,7 @@ export const Hero: React.FC = () => {
               {/* Line 1 */}
               <span className="block overflow-hidden">
                 <span className="hero-line-inner">
-                  Better Service.
+                  Elevated Standards.
                 </span>
               </span>
               {/* Line 2 */}
@@ -68,15 +68,14 @@ export const Hero: React.FC = () => {
               {/* Line 3 */}
               <span className="block overflow-hidden">
                 <span className="hero-line-inner">
-                  Stronger Business.
+                  Exceptional Hospitality.
                 </span>
               </span>
             </h1>
 
             {/* Sub-tagline — fades in via .hero-fade */}
             <p className="mt-8 text-sm text-black/50 tracking-wide opacity-0 hero-fade">
-              / Independent hospitality assessments for Nepal&apos;s
-              restaurants, cafés and bars /
+              / Independent Hospitality Assessments, Operational Management, Professional Training & Performance Improvement. /
             </p>
 
             {/* CTAs — fade in with hero-fade */}
@@ -101,14 +100,94 @@ export const Hero: React.FC = () => {
         </div>
       </div>
 
-      {/* Giant watermark text */}
-      <div className="absolute -bottom-[4vw] left-1/2 -translate-x-1/2 w-full z-[5] pointer-events-none overflow-hidden">
-        <p
-          className="font-heading text-[19.5vw] leading-none text-center text-[#1E4D33]/10 whitespace-nowrap select-none font-light tracking-tighter"
-          style={{ WebkitTextStroke: "1px rgba(30, 77, 51, 0.12)" }}
-        >
-          HOSPITALITY
-        </p>
+      {/* Infinite Seamless Brand Logo Marquee replacing the static watermark */}
+      <div className="relative w-full z-20 py-10 sm:py-14 border-t border-black/5 bg-[#FBFAF7]/95 backdrop-blur-sm overflow-hidden select-none">
+        <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent_0%,black_6%,black_94%,transparent_100%)]">
+          <div
+            className="brand-marquee-track flex flex-nowrap items-center"
+            style={{
+              animation: "infinite-marquee 22s linear infinite",
+            }}
+          >
+            {/* Set 1 */}
+            <div className="flex items-center shrink-0">
+              <div className="h-20 sm:h-24 w-60 sm:w-72 flex items-center justify-center shrink-0 px-8 sm:px-10">
+                <img
+                  src="/brand_logo/shmg.png"
+                  alt="SHMG"
+                  className="max-h-full max-w-full object-contain grayscale opacity-75 hover:grayscale-0 hover:opacity-100 hover:scale-105 transition-all duration-300"
+                />
+              </div>
+              <div className="h-20 sm:h-24 w-60 sm:w-72 flex items-center justify-center shrink-0 px-8 sm:px-10">
+                <img
+                  src="/brand_logo/nepalfounder.png"
+                  alt="Nepal Founder"
+                  className="max-h-full max-w-full object-contain grayscale opacity-75 hover:grayscale-0 hover:opacity-100 hover:scale-105 transition-all duration-300"
+                />
+              </div>
+              <div className="h-20 sm:h-24 w-60 sm:w-72 flex items-center justify-center shrink-0 px-8 sm:px-10">
+                <img
+                  src="/brand_logo/offernepal.png"
+                  alt="Offer Nepal"
+                  className="max-h-full max-w-full object-contain grayscale opacity-75 hover:grayscale-0 hover:opacity-100 hover:scale-105 transition-all duration-300"
+                />
+              </div>
+              <div className="h-20 sm:h-24 w-60 sm:w-72 flex items-center justify-center shrink-0 px-8 sm:px-10">
+                <img
+                  src="/brand_logo/onevillage.png"
+                  alt="One Village"
+                  className="max-h-full max-w-full object-contain grayscale opacity-75 hover:grayscale-0 hover:opacity-100 hover:scale-105 transition-all duration-300"
+                />
+              </div>
+              <div className="h-20 sm:h-24 w-60 sm:w-72 flex items-center justify-center shrink-0 px-8 sm:px-10">
+                <img
+                  src="/brand_logo/sixsummit.png"
+                  alt="Six Summit"
+                  className="max-h-full max-w-full object-contain grayscale opacity-75 hover:grayscale-0 hover:opacity-100 hover:scale-105 transition-all duration-300"
+                />
+              </div>
+            </div>
+
+            {/* Set 2 (Identical duplicate for seamless continuous loop) */}
+            <div className="flex items-center shrink-0">
+              <div className="h-20 sm:h-24 w-60 sm:w-72 flex items-center justify-center shrink-0 px-8 sm:px-10">
+                <img
+                  src="/brand_logo/shmg.png"
+                  alt="SHMG"
+                  className="max-h-full max-w-full object-contain grayscale opacity-75 hover:grayscale-0 hover:opacity-100 hover:scale-105 transition-all duration-300"
+                />
+              </div>
+              <div className="h-20 sm:h-24 w-60 sm:w-72 flex items-center justify-center shrink-0 px-8 sm:px-10">
+                <img
+                  src="/brand_logo/nepalfounder.png"
+                  alt="Nepal Founder"
+                  className="max-h-full max-w-full object-contain grayscale opacity-75 hover:grayscale-0 hover:opacity-100 hover:scale-105 transition-all duration-300"
+                />
+              </div>
+              <div className="h-20 sm:h-24 w-60 sm:w-72 flex items-center justify-center shrink-0 px-8 sm:px-10">
+                <img
+                  src="/brand_logo/offernepal.png"
+                  alt="Offer Nepal"
+                  className="max-h-full max-w-full object-contain grayscale opacity-75 hover:grayscale-0 hover:opacity-100 hover:scale-105 transition-all duration-300"
+                />
+              </div>
+              <div className="h-20 sm:h-24 w-60 sm:w-72 flex items-center justify-center shrink-0 px-8 sm:px-10">
+                <img
+                  src="/brand_logo/onevillage.png"
+                  alt="One Village"
+                  className="max-h-full max-w-full object-contain grayscale opacity-75 hover:grayscale-0 hover:opacity-100 hover:scale-105 transition-all duration-300"
+                />
+              </div>
+              <div className="h-20 sm:h-24 w-60 sm:w-72 flex items-center justify-center shrink-0 px-8 sm:px-10">
+                <img
+                  src="/brand_logo/sixsummit.png"
+                  alt="Six Summit"
+                  className="max-h-full max-w-full object-contain grayscale opacity-75 hover:grayscale-0 hover:opacity-100 hover:scale-105 transition-all duration-300"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </header>
   );

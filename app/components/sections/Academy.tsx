@@ -17,7 +17,7 @@ export const Academy: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16 md:mb-20 max-w-2xl mx-auto">
           <span className="block text-[#B89856] text-xs uppercase tracking-widest font-medium mb-4">Academy</span>
-          <h2 className="font-heading split-animate text-3xl md:text-5xl font-light tracking-tighter text-[#12281A] mb-6">SHMG Academy</h2>
+          <h2 className="font-heading split-animate text-3xl md:text-5xl font-light tracking-tighter text-[#12281A] mb-6">SHM Academy</h2>
           <p className="text-sm md:text-base text-stone-500 split-animate">Building service confidence and stronger leadership through practical training</p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

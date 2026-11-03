@@ -290,6 +290,30 @@ body {
 }
 
 /* ============================================================
+   INFINITE BRAND LOGO MARQUEE
+   Smooth, hardware-accelerated, seamless loop.
+   Does not stop on hover. Never flinches or restarts.
+   ============================================================ */
+@keyframes infinite-marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.brand-marquee-track {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  width: max-content !important;
+  align-items: center !important;
+  animation: infinite-marquee 25s linear infinite !important;
+  will-change: transform;
+}
+
+/* ============================================================
    REDUCED MOTION
    Everything renders in its final state. No masked text, no
    scroll-scrubbed transforms, no curtain.

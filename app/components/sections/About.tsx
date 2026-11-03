@@ -4,18 +4,16 @@ import React from "react";
 import Image from "next/image";
 
 /**
- * About — "Beyond the Skyline" text composition.
- *
- * Mirrors the AURUM reference exactly:
- *   • heading + supporting paragraph + a meta row, each marked
- *     `split-animate`
- *   • every element splits into per-word masks and rises on scroll
- *   • trigger  top 85%  ·  duration 1s  ·  ease power3.out
- *     stagger 0.02s  ·  toggleActions "play none none reverse"
- *
- * Unlike the reference, the splitter here preserves inline markup, so
- * the accented closing phrase keeps its colour and the meta row keeps
- * its two-column flex layout.
+ * About — SMART HOSPITALITY MANAGEMENT GROUP
+ * 
+ * Verbatim text structure:
+ * - Header: SMART HOSPITALITY MANAGEMENT GROUP
+ * - Tagline: Global Standards. Local Hospitality. Measurable Excellence.
+ * - Mission: Elevating Service. Empowering People. Improving Performance.
+ * - Vision: To Set the Benchmark for Hospitality Excellence in Nepal and Beyond.
+ * - Brand Promise: We Assess. We Train. We Improve. We Elevate.
+ * 
+ * GSAP split-animate word reveal active across heading, tagline, mission, vision, and promise.
  */
 export const About: React.FC = () => {
   return (
@@ -23,21 +21,22 @@ export const About: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 sm:px-10 grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
         {/* Left — visual */}
         <div className="relative order-2 lg:order-1">
-          <div className="relative w-full h-[380px] sm:h-[500px] md:h-[600px] bg-stone-100 rounded-2xl overflow-hidden">
+          <div className="relative w-full h-[400px] sm:h-[520px] md:h-[640px] bg-stone-100 overflow-hidden border border-black/10">
             <Image
               src="/images/about-hospitality-interior.webp"
-              alt="Warmly lit restaurant dining room with timber tables, pendant lighting and a service counter"
+              alt="Warmly lit restaurant dining room with timber tables, pendant lighting and pristine service layout"
               fill
               sizes="(min-width: 1024px) 45vw, 92vw"
               className="object-cover"
             />
           </div>
-          <div className="absolute -bottom-10 -right-4 sm:-right-10 bg-[#FBFAF7] p-6 sm:p-10 hidden md:block border border-black/10">
-            <div className="text-4xl sm:text-5xl font-heading text-[#42A85D] mb-2 font-light tracking-tighter">
-              1000+
+          {/* Framed metric block */}
+          <div className="absolute -bottom-8 -right-4 sm:-right-8 bg-[#FBFAF7] p-6 sm:p-8 hidden md:block border border-black/10">
+            <div className="text-3xl sm:text-4xl font-heading text-[#B89856] mb-1 font-light tracking-tighter">
+              1,000+
             </div>
-            <div className="text-xs font-bold tracking-widest uppercase text-black">
-              Point
+            <div className="text-xs font-semibold tracking-widest uppercase text-[#12281A]">
+              Audit Points
               <br />
               Framework
             </div>
@@ -46,71 +45,67 @@ export const About: React.FC = () => {
 
         {/* Right — copy */}
         <div className="order-1 lg:order-2">
-          <span className="block text-[#42A85D] text-xs uppercase tracking-[0.25em] font-medium mb-5">
-            About
+          {/* Section eyebrow */}
+          <span className="block text-[#B89856] text-xs uppercase tracking-[0.25em] font-medium mb-4">
+            About Us
           </span>
 
-          {/* ── Headline: accented closing phrase, same shape as
-                 "Beyond the <br> Skyline." — but allowed to wrap
-                 naturally instead of a hard <br>, so it holds up
-                 from 360px to 1920px. ── */}
-          <h2 className="font-heading split-animate text-3xl sm:text-4xl md:text-5xl leading-[1.1] font-light tracking-tighter text-[#12281A] mb-8">
-            About Smart Hospitality{" "}
-            <span className="text-[#42A85D]">Management.</span>
+          {/* Header */}
+          <h2 className="font-heading split-animate text-3xl sm:text-4xl md:text-5xl leading-[1.08] font-light tracking-tighter text-[#12281A] mb-4">
+            SMART HOSPITALITY <br />
+            <span className="text-[#1E4D33] font-normal">MANAGEMENT GROUP</span>
           </h2>
 
-          <p className="text-base md:text-lg font-light leading-relaxed text-black/60 mb-5 split-animate">
-            International hospitality thinking, adapted to local businesses.
-            SHMG is a proposed independent Nepal-origin hospitality performance
-            advisory combining guest experience assessment, training, cost
-            control and owner-focused business improvement.
+          {/* Tagline */}
+          <p className="split-animate text-base sm:text-lg font-medium text-[#B89856] tracking-tight mb-8">
+            Global Standards. Local Hospitality. Measurable Excellence.
           </p>
 
-          <p className="text-base md:text-lg font-light leading-relaxed text-black/60 split-animate">
-            For independent food-service businesses.
-          </p>
+          {/* Divider */}
+          <div className="h-px w-full bg-black/10 mb-8" />
 
-          {/* ── Hairline + meta row, as in the reference ── */}
-          <div className="h-px w-full bg-black/10 my-8" />
-
-          <div className="flex flex-wrap gap-x-8 gap-y-3 sm:gap-x-12 text-xs uppercase tracking-[0.2em] text-black/50 split-animate">
-            <div>Nepal Origin</div>
-            <div>Kathmandu, Nepal</div>
-          </div>
-
-          <div className="mt-12 space-y-10">
-            <div className="flex gap-6">
-              <div className="w-12 h-12 shrink-0 flex items-center justify-center border border-black/10 text-[#42A85D] bg-[#FBFAF7]">
-                <span className="text-2xl">🎯</span>
-              </div>
-              <div>
-                <h4 className="text-black font-light mb-2 text-base md:text-lg tracking-tight">
-                  Our Mission
-                </h4>
-                <p className="text-sm text-black/60 leading-relaxed">
-                  Improve every guest touchpoint through mystery assessments and
-                  operational audits; build staff capability; strengthen
-                  profitability with menu engineering, cost controls and digital
-                  visibility; provide owners with actionable performance
-                  insights.
-                </p>
-              </div>
+          {/* Mission & Vision stack */}
+          <div className="space-y-8">
+            {/* Mission */}
+            <div className="border-l-2 border-[#1E4D33] pl-6">
+              <span className="text-xs uppercase tracking-widest font-mono text-[#1E4D33] font-semibold block mb-1">
+                Our Mission
+              </span>
+              <h3 className="split-animate text-base sm:text-lg font-heading font-medium text-[#12281A] mb-2 tracking-tight">
+                Elevating Service. Empowering People. Improving Performance.
+              </h3>
+              <p className="split-animate text-xs sm:text-sm text-black/70 leading-relaxed font-light mb-2">
+                At Smart Hospitality Management Group (SHMG), our mission is to elevate the quality of hospitality across hotels, resorts, restaurants, and experiential tourism destinations.
+              </p>
+              <p className="split-animate text-xs sm:text-sm text-black/70 leading-relaxed font-light">
+                We bridge the gap between global hospitality benchmarks and authentic local experiences through independent quality assessments, structured training, operational audits, and performance advisory services. By developing people, refining standards, and optimizing operations, we empower hospitality businesses to deliver exceptional guest experiences and achieve sustainable profitability.
+              </p>
             </div>
-            <div className="flex gap-6">
-              <div className="w-12 h-12 shrink-0 flex items-center justify-center border border-black/10 text-[#42A85D] bg-[#FBFAF7]">
-                <span className="text-2xl">👁</span>
-              </div>
-              <div>
-                <h4 className="text-black font-light mb-2 text-base md:text-lg tracking-tight">
-                  Our Vision
-                </h4>
-                <p className="text-sm text-black/60 leading-relaxed">
-                  To become a trusted independent hospitality performance
-                  platform originating in Nepal and expanding across South Asia,
-                  supporting world-class service, data-driven management and
-                  sustainable operations.
-                </p>
-              </div>
+
+            {/* Vision */}
+            <div className="border-l-2 border-[#B89856] pl-6">
+              <span className="text-xs uppercase tracking-widest font-mono text-[#B89856] font-semibold block mb-1">
+                Our Vision
+              </span>
+              <h3 className="split-animate text-base sm:text-lg font-heading font-medium text-[#12281A] mb-2 tracking-tight">
+                To Set the Benchmark for Hospitality Excellence in Nepal and Beyond.
+              </h3>
+              <p className="split-animate text-xs sm:text-sm text-black/70 leading-relaxed font-light mb-2">
+                Our vision is to become the leading independent hospitality advisory and standards organization in Nepal and a recognized voice for service excellence in the region.
+              </p>
+              <p className="split-animate text-xs sm:text-sm text-black/70 leading-relaxed font-light">
+                We aspire to build an ecosystem where properties of all sizes—from boutique lodges to luxury resorts—operate with international discipline, culinary innovation, professional management, and genuine warmth. Through data-driven insights and continuous learning, we aim to transform hospitality into a powerful driver of economic growth and national pride.
+              </p>
+            </div>
+
+            {/* Brand Promise */}
+            <div className="bg-[#FBFAF7] p-6 border border-black/10">
+              <span className="text-xs uppercase tracking-widest font-mono text-black/40 font-medium block mb-2">
+                Brand Promise
+              </span>
+              <p className="split-animate font-heading text-lg sm:text-xl font-light tracking-tight text-[#1E4D33]">
+                &ldquo;We Assess. We Train. We Improve. We Elevate.&rdquo;
+              </p>
             </div>
           </div>
         </div>

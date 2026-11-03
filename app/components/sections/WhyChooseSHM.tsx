@@ -67,10 +67,10 @@ export const WhyChooseSHM: React.FC = () => {
     <section ref={sectionRef} className="stack-section stack-section--light">
       <div className="text-center mb-20 px-6">
         <div className="text-[#B89856] text-xs uppercase tracking-widest font-medium mb-4">
-          Why SHMG
+          Why SHM
         </div>
         <h2 className="font-heading text-5xl md:text-7xl font-light tracking-tighter text-[#12281A]">
-          Why Choose SHMG
+          Why Choose SHM
         </h2>
       </div>
 
